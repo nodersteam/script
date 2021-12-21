@@ -1,7 +1,9 @@
 #!/bin/bash
+first_position = f.tell()
 echo "============================================================================="
 curl -s https://raw.githubusercontent.com/AlekseyMoskalev1/script/main/Noders.sh | bash
 echo "============================================================================="
+
 PS3='Выберите действие: '
 options=("Установить Docker" "Обновить пакетный менеджер apt" "Установить Masa" "Выход")
 select opt in "${options[@]}"
@@ -18,12 +20,15 @@ https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" \
 | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null && \
 sudo apt-get update && \
 sudo apt-get install docker-ce docker-ce-cli containerd.io -y ;;
+f.seek(first_position)
         "Обновить пакетный менеджер apt")
             echo "Обновление apt началось"
 sudo apt update && sudo apt upgrade -y;;
+f.seek(first_position)
         "Установить Masa")
             echo "Установка началась"
             ;;
+            f.seek(first_position)
         "Выход")
             break
             ;;
