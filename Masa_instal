@@ -32,6 +32,14 @@ break
             ;;
         "Установить Masa")
             echo "Установка началась"
+git clone https://github.com/masa-finance/masa-node-v1.0 && \
+cd masa-node-v1.0
+
+PRIVATE_CONFIG=ignore docker-compose up -d
+echo "Прверяем логи"
+
+docker logs masa-node-v10_masa-node_1 -f
+ 
 break
             ;;
         "Выход")
