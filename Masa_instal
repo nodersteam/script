@@ -19,15 +19,12 @@ https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" \
 | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null && \
 sudo apt-get update && \
 sudo apt-get install docker-ce docker-ce-cli containerd.io -y ;;
-fi
         "Обновить пакетный менеджер apt")
             echo "Обновление apt началось"
 sudo apt update && sudo apt upgrade -y;;
-fi
         "Установить Masa")
             echo "Установка началась"
             ;;
-fi
         "Выход")
             break
             ;;
