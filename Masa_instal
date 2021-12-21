@@ -25,16 +25,16 @@ options=("Установить Docker" "Обновить пакетный мен
 select opt in "${options[@]}"
 do
     case $opt in
-        "Установить Docker")
+        "Установить Docker"
             echo "Установка Docker началась"
-docker
-        "Обновить пакетный менеджер apt")
+docker ;;
+        "Обновить пакетный менеджер apt"
             echo "Обновление apt началось"
-apt
-        "Установить Masa")
+apt ;;
+        "Установить Masa"
             echo "Установка началась"
             ;;
-        "Выход")
+        "Выход"
             break
             ;;
         *) echo "invalid option $REPLY";;
