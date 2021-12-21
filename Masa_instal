@@ -29,4 +29,6 @@ sudo apt update && sudo apt upgrade -y;;
             ;;
         *) echo "invalid option $REPLY";;
     esac
+    fi
+    options
 done
