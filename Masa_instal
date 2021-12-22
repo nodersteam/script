@@ -2,16 +2,18 @@
 
 while true
 do
-echo "============================================================================="
+echo "========================================================================"
 curl -s https://raw.githubusercontent.com/AlekseyMoskalev1/script/main/Noders.sh | bash
-echo "============================================================================="
+echo "========================================================================"
 PS3='Выберите действие: '
 options=("Установить Docker" "Обновить пакетный менеджер apt" "Установить Masa" "Удалить Masa" "Выход")
 select opt in "${options[@]}"
 do
-    case $opt in
+case $opt in
 "Установить Docker")
+echo "========================="
 echo "Установка Docker началась"
+echo "========================="
 sudo apt-get install curl gnupg apt-transport-https ca-certificates \
 lsb-release -y && curl -fsSL https://download.docker.com/linux/ubuntu/gpg \
 | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg && \
@@ -26,23 +28,31 @@ sudo chmod +x /usr/local/bin/docker-compose && docker-compose --version
 break
             ;;
 "Обновить пакетный менеджер apt")
+echo "======================="
 echo "Обновление apt началось"
+echo "======================="
 sudo apt update && sudo apt upgrade -y
 break
             ;;
 "Установить Masa")
+echo "=================="
 echo "Установка началась"
+echo "=================="
 git clone https://github.com/masa-finance/masa-node-v1.0
 cd masa-node-v1.0
-cd masa-node-v1.0
 PRIVATE_CONFIG=ignore docker-compose up -d
+echo "============="
 echo "Прверяем логи"
+echo "============="
 docker logs masa-node-v10_masa-node_1 -f
 break
             ;;
 "Удалить Masa")
 docker stop  masa-node-v10_masa-node_1
-docker rm  masa-node-v10_masa-node_1        
+docker rm  masa-node-v10_masa-node_1
+echo "============"
+echo "Нода удалена"
+echo "============"
 break
             ;;
 "Выход")
