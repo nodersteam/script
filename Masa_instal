@@ -43,7 +43,6 @@ docker logs masa-node-v10_masa-node_1 -f
 break
             ;;
         "Выход")
-break
 exit
             ;;
         *) echo "invalid option $REPLY";;
