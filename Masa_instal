@@ -59,7 +59,7 @@ break
 "Удалить Masa")
 docker stop  masa-node-v10_masa-node_1
 docker rm  masa-node-v10_masa-node_1
-rmdir -p masa-node-v1.0
+rmdir -R masa-node-v1.0
 echo "============================================================"
 echo "Нода удалена"
 echo "============================================================"
