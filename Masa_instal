@@ -11,9 +11,9 @@ select opt in "${options[@]}"
 do
 case $opt in
 "Установить Docker")
-echo "========================="
+echo "============================================================"
 echo "Установка Docker началась"
-echo "========================="
+echo "============================================================"
 sudo apt-get install curl gnupg apt-transport-https ca-certificates \
 lsb-release -y && curl -fsSL https://download.docker.com/linux/ubuntu/gpg \
 | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg && \
@@ -25,34 +25,43 @@ sudo apt-get update && \
 sudo apt-get install docker-ce docker-ce-cli containerd.io -y
 sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && \
 sudo chmod +x /usr/local/bin/docker-compose && docker-compose --version
+echo "============================================================"
+echo "Docker установлен"
+echo "============================================================"
 break
-            ;;
+;;
 "Обновить пакетный менеджер apt")
-echo "======================="
+echo "============================================================"
 echo "Обновление apt началось"
-echo "======================="
+echo "============================================================"
 sudo apt update && sudo apt upgrade -y
+echo "============================================================"
+echo "Обновление apt зкончено"
+echo "============================================================"
 break
-            ;;
+;;
 "Установить Masa")
-echo "=================="
+echo "============================================================"
 echo "Установка началась"
-echo "=================="
+echo "============================================================"
 git clone https://github.com/masa-finance/masa-node-v1.0
 cd masa-node-v1.0
 PRIVATE_CONFIG=ignore docker-compose up -d
-echo "============="
+echo "============================================================"
 echo "Прверяем логи"
-echo "============="
-docker logs masa-node-v10_masa-node_1 -f
+echo "============================================================"
+docker logs masa-node-v10_masa-node_1 -f --tail 10
+echo "============================================================"
+echo "Если есть ошибки, сообщите в наш чат поддержки"
+echo "============================================================"
 break
             ;;
 "Удалить Masa")
 docker stop  masa-node-v10_masa-node_1
 docker rm  masa-node-v10_masa-node_1
-echo "============"
+echo "============================================================"
 echo "Нода удалена"
-echo "============"
+echo "============================================================"
 break
             ;;
 "Выход")
