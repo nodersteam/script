@@ -6,7 +6,7 @@ echo "============================================================"
 curl -s https://raw.githubusercontent.com/AlekseyMoskalev1/script/main/Noders.sh | bash
 echo "============================================================"
 PS3='Выберите действие: '
-options=("Установить Docker" '\n' "Обновить пакетный менеджер apt" '\n' "Установить Masa" '\n' "Удалить Masa" '\n' "Выход")
+options=("Установить Docker"\n"Обновить пакетный менеджер apt"\n"Установить Masa"\n"Удалить Masa"\n"Выход")
 select opt in "${options[@]}"
 do
 case $opt in
