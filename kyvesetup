@@ -71,6 +71,14 @@ docker run -d -it --restart=always \
 --pool 0x464200b29738367366FDb4c45f3b8fb582AE0Bf8 \
 --private-key $private_key \
 --stake $avalanche_stake
+echo "============================================================"
+echo "Checking the logs"
+echo "============================================================"
+docker logs kyve-avalanche-node --follow --tail=100
+echo "============================================================"
+echo "If there are no errors in the logs, congratulations, the node is
+installed. If you have any doubts - send screenshots to our support chat"
+echo "============================================================"
 ;;
 "Run MoonRiver Node")
 echo "============================================================"
