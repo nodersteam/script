@@ -7,13 +7,14 @@ curl -s https://raw.githubusercontent.com/AlekseyMoskalev1/script/main/Noders.sh
 echo "============================================================"
 PS3='Select an action: '
 options=(
-"Install Docker \n"
-"Update ATP \n"
-"Run MoonRiver Node \n"
-"Run Cosmos Node \n"
-"Run Celo Node \n"
-"Run Solana Node \n"
+"Install Docker"
+"Update ATP"
+"Run MoonRiver Node"
+"Run Cosmos Node"
+"Run Celo Node"
+"Run Solana Node"
 "Run Evmos EVM Node"
+\n
 "Run Evmos Tendermint Node"
 "Run Near Node"
 "Run Aurora Node"
