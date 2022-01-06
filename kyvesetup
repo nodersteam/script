@@ -52,7 +52,7 @@ echo "ATP updated"
 echo "============================================================"
 break
 ;;
-"Run Avalanche Node"
+"Run Avalanche Node")
 echo "============================================================"
 echo "Node installation started"
 echo "============================================================"
@@ -72,43 +72,42 @@ docker run -d -it --restart=always \
 --private-key $private_key \
 --stake $avalanche_stake
 ;;
-"Run MoonRiver Node"
+"Run MoonRiver Node")
 echo "============================================================"
 echo "Node installation started"
 echo "============================================================"
 ;;
-"Run Cosmos Node"
+"Run Cosmos Node")
 echo "============================================================"
 echo "Node installation started"
 echo "============================================================"
 ;;
-"Run Celo Node"
+"Run Celo Node")
 echo "============================================================"
 echo "Node installation started"
 echo "============================================================"
 ;;
-"Run Solana Node"
+"Run Solana Node")
 echo "============================================================"
 echo "Node installation started"
 echo "============================================================"
 ;;
-"Run Evmos EVM Node"
+"Run Evmos EVM Node")
 echo "============================================================"
 echo "Node installation started"
 echo "============================================================"
 ;;
-"Run Evmos Tendermint Node"
+"Run Evmos Tendermint Node")
 echo "============================================================"
 echo "Node installation started"
 echo "============================================================"
 ;;
-"Run Near Node"
+"Run Near Node")
 echo "============================================================"
 echo "Node installation started"
 echo "============================================================"
-
 ;;
-"Run Aurora Node"
+"Run Aurora Node")
 echo "============================================================"
 echo "Node installation started"
 echo "============================================================"
