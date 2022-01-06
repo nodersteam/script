@@ -10,11 +10,12 @@ options=(
 "Install Docker"
 "Update ATP"
 "Run MoonRiver Node"
+%echo $'\\n'
 "Run Cosmos Node"
 "Run Celo Node"
 "Run Solana Node"
+%echo $'\\n'
 "Run Evmos EVM Node"
-\n
 "Run Evmos Tendermint Node"
 "Run Near Node"
 "Run Aurora Node"
