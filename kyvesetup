@@ -9,6 +9,7 @@ PS3='Select an action: '
 options=(
 "Install Docker"
 "Update ATP"
+"Run Avalanche Node"
 "Run MoonRiver Node"
 "Run Cosmos Node"
 "Run Celo Node"
@@ -50,6 +51,67 @@ echo "============================================================"
 echo "ATP updated"
 echo "============================================================"
 break
+;;
+"Run Avalanche Node"
+echo "============================================================"
+echo "Node installation started"
+echo "============================================================"
+echo "Enter your private key:"
+echo "============================================================"
+read private_key
+echo "============================================================"
+echo "Enter stake amount:"
+echo "============================================================"
+read avalanche_stake
+docker pull kyve/evm:latest && \
+docker stop kyve-avalanche-node 2>/dev/null; \
+docker container rm kyve-avalanche-node 2>/dev/null; \
+docker run -d -it --restart=always \
+--name kyve-avalanche-node kyve/evm:latest \
+--pool 0x464200b29738367366FDb4c45f3b8fb582AE0Bf8 \
+--private-key $private_key \
+--stake $avalanche_stake
+;;
+"Run MoonRiver Node"
+echo "============================================================"
+echo "Node installation started"
+echo "============================================================"
+;;
+"Run Cosmos Node"
+echo "============================================================"
+echo "Node installation started"
+echo "============================================================"
+;;
+"Run Celo Node"
+echo "============================================================"
+echo "Node installation started"
+echo "============================================================"
+;;
+"Run Solana Node"
+echo "============================================================"
+echo "Node installation started"
+echo "============================================================"
+;;
+"Run Evmos EVM Node"
+echo "============================================================"
+echo "Node installation started"
+echo "============================================================"
+;;
+"Run Evmos Tendermint Node"
+echo "============================================================"
+echo "Node installation started"
+echo "============================================================"
+;;
+"Run Near Node"
+echo "============================================================"
+echo "Node installation started"
+echo "============================================================"
+
+;;
+"Run Aurora Node"
+echo "============================================================"
+echo "Node installation started"
+echo "============================================================"
 ;;
 "Exit")
 exit
