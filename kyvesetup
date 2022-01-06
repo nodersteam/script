@@ -2,13 +2,20 @@
 
 while true
 do
+
+# Logo
+
 echo "============================================================"
 curl -s https://raw.githubusercontent.com/AlekseyMoskalev1/script/main/Noders.sh | bash
 echo "============================================================"
+
+# Menu
+
 PS3='Select an action: '
 options=(
 "Install Docker"
 "Update ATP"
+"Setup your Private Key for next install"
 "Run Avalanche Node"
 "Run MoonRiver Node"
 "Run Cosmos Node"
@@ -22,6 +29,9 @@ options=(
 select opt in "${options[@]}"
 do
 case $opt in
+
+# Docker
+
 "Install Docker")
 echo "============================================================"
 echo "Docker installation started"
@@ -42,6 +52,9 @@ echo "Docker installed"
 echo "============================================================"
 break
 ;;
+
+# ATP
+
 "Update ATP")
 echo "============================================================"
 echo "ATP update started"
@@ -52,13 +65,24 @@ echo "ATP updated"
 echo "============================================================"
 break
 ;;
-"Run Avalanche Node")
-echo "============================================================"
-echo "Node installation started"
+
+# Setup private key
+
+"Setup your Private Key for next install")
 echo "============================================================"
 echo "Enter your private key: "
 echo "============================================================"
 read private_key
+echo "============================================================"
+echo "Private key installed $private_key"
+echo "============================================================"
+;;
+
+# Avalance
+
+"Run Avalanche Node")
+echo "============================================================"
+echo "Node installation started"
 echo "============================================================"
 echo "Enter stake amount: "
 echo "============================================================"
@@ -81,46 +105,233 @@ installed. If you have any doubts - send screenshots to our support chat"
 echo "============================================================"
 break
 ;;
+
+# MoonRiver
+
 "Run MoonRiver Node")
 echo "============================================================"
 echo "Node installation started"
 echo "============================================================"
+echo "Enter stake amount: "
+echo "============================================================"
+read moonriver_stake
+docker pull kyve/evm:latest && \
+docker stop kyve-moonriver-node 2>/dev/null; \
+docker container rm kyve-moonriver-node 2>/dev/null; \
+docker run -d -it --restart=always \
+--name kyve-moonriver-node kyve/evm:latest \
+--pool 0x610D55fA573Bce4D2d36e8ADAAee517B785a69dF \
+--private-key $private_key \
+--stake $moonriver_stake
+echo "============================================================"
+echo "Checking the logs"
+echo "============================================================"
+docker logs kyve-moonriver-node --follow --tail=100
+echo "============================================================"
+echo "If there are no errors in the logs, congratulations, the node is
+installed. If you have any doubts - send screenshots to our support chat"
+echo "============================================================"
+break
 ;;
+
+# Cosmos
+
 "Run Cosmos Node")
 echo "============================================================"
 echo "Node installation started"
 echo "============================================================"
+echo "Enter stake amount: "
+echo "============================================================"
+read cosmos_stake
+docker pull kyve/cosmos:latest && \
+docker stop kyve-cosmos-node 2>/dev/null; \
+docker container rm kyve-cosmos-node 2>/dev/null; \
+docker run -d -it --restart=always \
+--name kyve-cosmos-node kyve/cosmos:latest \
+--pool 0x7Bb18C81BBA6B8dE8C17B97d78B65327024F681f \
+--private-key $private_key \
+--stake $cosmos_stake
+echo "============================================================"
+echo "Checking the logs"
+echo "============================================================"
+docker logs kyve-cosmos-node --follow --tail=100
+echo "============================================================"
+echo "If there are no errors in the logs, congratulations, the node is
+installed. If you have any doubts - send screenshots to our support chat"
+echo "============================================================"
+break
 ;;
+
+#Celo
+
 "Run Celo Node")
 echo "============================================================"
 echo "Node installation started"
 echo "============================================================"
+echo "Enter stake amount: "
+echo "============================================================"
+read celo_stake
+docker pull kyve/celo:latest && \
+docker stop kyve-celo-node 2>/dev/null; \
+docker container rm kyve-celo-node 2>/dev/null; \
+docker run -d -it --restart=always \
+--name kyve-celo-node kyve/celo:latest \
+--pool 0x1588fd93715Aa08d67c32C6dF96fC730B15E1E1A \
+--private-key $private_key \
+--stake $celo_stake
+echo "============================================================"
+echo "Checking the logs"
+echo "============================================================"
+docker logs kyve-celo-node --follow --tail=100
+echo "============================================================"
+echo "If there are no errors in the logs, congratulations, the node is
+installed. If you have any doubts - send screenshots to our support chat"
+echo "============================================================"
+break
 ;;
+
+# Solana
+
 "Run Solana Node")
 echo "============================================================"
 echo "Node installation started"
 echo "============================================================"
+echo "Enter stake amount: "
+echo "============================================================"
+read solana_stake
+docker pull kyve/solana-snapshots:latest && \
+docker stop kyve-solana-node 2>/dev/null; \
+docker container rm kyve-solana-node 2>/dev/null; \
+docker run -d -it --restart=always \
+--name kyve-solana-node kyve/solana-snapshots:latest \
+--pool 0x3124375cA4de5FE5afD672EF2775c6bdcA1Cfdcc \
+--private-key $private_key \
+--stake $solana_stake
+echo "============================================================"
+echo "Checking the logs"
+echo "============================================================"
+docker logs kyve-solana-node --follow --tail=100
+echo "============================================================"
+echo "If there are no errors in the logs, congratulations, the node is
+installed. If you have any doubts - send screenshots to our support chat"
+echo "============================================================"
+break
 ;;
+
+# Evmos EVM
+
 "Run Evmos EVM Node")
 echo "============================================================"
 echo "Node installation started"
 echo "============================================================"
+echo "Enter stake amount: "
+echo "============================================================"
+read evm_stake
+docker pull kyve/evm:latest && \
+docker stop kyve-evmos_evm-node 2>/dev/null; \
+docker container rm kyve-evmos_evm-node 2>/dev/null; \
+docker run -d -it --restart=always \
+--name kyve-evmos_evm-node kyve/evm:latest \
+--pool 0x24E7b48c3a6E40ea0e50764E617906c9B7cf9F21 \
+--private-key $private_key \
+--stake $evm_stake
+echo "============================================================"
+echo "Checking the logs"
+echo "============================================================"
+docker logs kyve-evmos_evm-node --follow --tail=100
+echo "============================================================"
+echo "If there are no errors in the logs, congratulations, the node is
+installed. If you have any doubts - send screenshots to our support chat"
+echo "============================================================"
+break
 ;;
+
+# Evmos Tendermint
+
 "Run Evmos Tendermint Node")
 echo "============================================================"
 echo "Node installation started"
 echo "============================================================"
+echo "Enter stake amount: "
+echo "============================================================"
+read tendermint_stake
+ocker pull kyve/cosmos:latest && \
+docker stop kyve-evmos_tendermint-node 2>/dev/null; \
+docker container rm kyve-evmos_tendermint-node 2>/dev/null; \
+docker run -d -it --restart=always \
+--name kyve-evmos_tendermint-node kyve/cosmos:latest \
+--pool 0xAa3337d1f8F72D544f3843B2089d2DA02BBcbD28 \
+--private-key $private_key \
+--stake $tendermint_stake
+echo "============================================================"
+echo "Checking the logs"
+echo "============================================================"
+docker logs kyve-evmos_tendermint-node --follow --tail=100
+echo "============================================================"
+echo "If there are no errors in the logs, congratulations, the node is
+installed. If you have any doubts - send screenshots to our support chat"
+echo "============================================================"
+break
 ;;
+
+# Near
+
 "Run Near Node")
 echo "============================================================"
 echo "Node installation started"
 echo "============================================================"
+echo "Enter stake amount: "
+echo "============================================================"
+read near_stake
+docker pull kyve/near:latest && \
+docker stop kyve-near-node 2>/dev/null; \
+docker container rm kyve-near-node 2>/dev/null; \
+docker run -d -it --restart=always \
+--name kyve-near-node kyve/near:latest \
+--pool 0xFAb226300F8B481dF35445c22d73fF5cb9C409eD \
+--private-key $private_key \
+--stake $near_stake
+echo "============================================================"
+echo "Checking the logs"
+echo "============================================================"
+docker logs kyve-near-node --follow --tail=100
+echo "============================================================"
+echo "If there are no errors in the logs, congratulations, the node is
+installed. If you have any doubts - send screenshots to our support chat"
+echo "============================================================"
+break
 ;;
+
+#Aurora
+
 "Run Aurora Node")
 echo "============================================================"
 echo "Node installation started"
 echo "============================================================"
+echo "Enter stake amount: "
+echo "============================================================"
+read aurora_stake
+docker pull kyve/evm-snapshots:latest && \
+docker stop kyve-aurora-node 2>/dev/null; \
+docker container rm kyve-aurora-node 2>/dev/null; \
+docker run -d -it --restart=always \
+--name kyve-aurora-node kyve/evm-snapshots:latest \
+--pool 0x5C3ea1634E97F44b592524616F4b158D569DF920 \
+--private-key $private_key \
+--stake $aurora_stake
+echo "============================================================"
+echo "Checking the logs"
+echo "============================================================"
+docker logs kyve-aurora-node --follow --tail=100
+echo "============================================================"
+echo "If there are no errors in the logs, congratulations, the node is
+installed. If you have any doubts - send screenshots to our support chat"
+echo "============================================================"
+break
 ;;
+
+#Exit
+
 "Exit")
 exit
 ;;
