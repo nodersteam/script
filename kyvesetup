@@ -7,16 +7,16 @@ curl -s https://raw.githubusercontent.com/AlekseyMoskalev1/script/main/Noders.sh
 echo "============================================================"
 PS3='Select an action: '
 options=(
-"Install Docker"\n
-"Update ATP"\n
-"Run MoonRiver"\n
-"Run Cosmos"\n
-"Run Celo"\n
-"Run Solana"\n
-"Run Evmos EVM"\n
-"Run Evmos Tendermint"\n
-"Run Near"\n
-"Run Aurora"\n
+"Install Docker"
+"Update ATP"
+"Run MoonRiver"
+"Run Cosmos"
+"Run Celo"
+"Run Solana"
+"Run Evmos EVM"
+"Run Evmos Tendermint"
+"Run Near"
+"Run Aurora"
 "Exit")
 select opt in "${options[@]}"
 do
