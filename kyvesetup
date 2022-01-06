@@ -8,15 +8,25 @@ echo "============================================================"
 PS3='Select an action: '
 options=(
 "Install Docker"
+echo $'\n'
 "Update ATP"
+echo $'\n'
 "Run MoonRiver"
+echo $'\n'
 "Run Cosmos"
+echo $'\n'
 "Run Celo"
+echo $'\n'
 "Run Solana"
+echo $'\n'
 "Run Evmos EVM"
+echo $'\n'
 "Run Evmos Tendermint"
+echo $'\n'
 "Run Near"
+echo $'\n'
 "Run Aurora"
+echo $'\n'
 "Exit")
 select opt in "${options[@]}"
 do
