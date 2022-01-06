@@ -16,7 +16,8 @@ options=(
 "Run Evmos EVM"
 "Run Evmos Tendermint"
 "Run Near"
-"Run Aurora")
+"Run Aurora"
+"Exit")
 select opt in "${options[@]}"
 do
 case $opt in
@@ -50,3 +51,10 @@ echo "ATP updated"
 echo "============================================================"
 break
 ;;
+"Exit")
+exit
+;;
+*) echo "invalid option $REPLY";;
+esac
+done
+done
