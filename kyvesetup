@@ -79,6 +79,7 @@ echo "============================================================"
 echo "If there are no errors in the logs, congratulations, the node is
 installed. If you have any doubts - send screenshots to our support chat"
 echo "============================================================"
+break
 ;;
 "Run MoonRiver Node")
 echo "============================================================"
