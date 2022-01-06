@@ -76,6 +76,7 @@ read private_key
 echo "============================================================"
 echo "Private key installed $private_key"
 echo "============================================================"
+break
 ;;
 
 # Avalance
