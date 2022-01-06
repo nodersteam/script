@@ -2,22 +2,31 @@
 
 while true
 do
+
+#Logo
+
 echo "============================================================"
 curl -s https://raw.githubusercontent.com/AlekseyMoskalev1/script/main/Noders.sh | bash
 echo "============================================================"
-PS3='Выберите действие: '
+
+#Menu
+
+PS3='Select an action: '
 options=(
-"Установить Docker"
-"Обновить пакетный менеджер apt"
-"Установить Masa"
-"Удалить Masa"
-"Выход")
+"Install Docker"
+"Update ATP"
+"Setup Masa"
+"Remove Masa"
+"Exit")
 select opt in "${options[@]}"
 do
 case $opt in
-"Установить Docker")
+
+#Docker
+
+"Install Docker")
 echo "============================================================"
-echo "Установка Docker началась"
+echo "Docker installation started"
 echo "============================================================"
 sudo apt-get install curl gnupg apt-transport-https ca-certificates \
 lsb-release -y && curl -fsSL https://download.docker.com/linux/ubuntu/gpg \
@@ -31,46 +40,59 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io -y
 sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && \
 sudo chmod +x /usr/local/bin/docker-compose && docker-compose --version
 echo "============================================================"
-echo "Docker установлен"
+echo "Docker installed"
 echo "============================================================"
 break
 ;;
-"Обновить пакетный менеджер apt")
+
+# ATP
+
+"Update ATP")
 echo "============================================================"
-echo "Обновление apt началось"
+echo "ATP update started"
 echo "============================================================"
 sudo apt update && sudo apt upgrade -y
 echo "============================================================"
-echo "Обновление apt зкончено"
+echo "ATP updated"
 echo "============================================================"
 break
 ;;
-"Установить Masa")
+
+#Instal
+
+"Setup Masa")
 echo "============================================================"
-echo "Установка началась"
+echo "Node installation started"
 echo "============================================================"
 git clone https://github.com/masa-finance/masa-node-v1.0
 cd masa-node-v1.0
 PRIVATE_CONFIG=ignore docker-compose up -d
 echo "============================================================"
-echo "Прверяем логи"
+echo "Checking the logs"
 echo "============================================================"
 docker logs masa-node-v10_masa-node_1 -f --tail 10
 echo "============================================================"
-echo "Если есть ошибки, сообщите в наш чат поддержки"
+echo "If there are no errors in the logs, congratulations, the node is
+installed. If you have any doubts - send screenshots to our support chat"
 echo "============================================================"
 break
-            ;;
-"Удалить Masa")
+;;
+
+#Remove
+
+"Remove Masa")
 docker stop  masa-node-v10_masa-node_1
 docker rm  masa-node-v10_masa-node_1
 rm -r masa-node-v1.0
 echo "============================================================"
-echo "Нода удалена"
+echo "Masa removed"
 echo "============================================================"
 break
-            ;;
-"Выход")
+;;
+
+#Exit
+
+"Exit")
 exit
             ;;
 *) echo "invalid option $REPLY";;
