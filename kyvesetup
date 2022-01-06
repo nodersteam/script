@@ -7,8 +7,8 @@ curl -s https://raw.githubusercontent.com/AlekseyMoskalev1/script/main/Noders.sh
 echo "============================================================"
 PS3='Select an action: '
 options=(
-"Install Docker"
-"Update ATP"
+"Install Docker\n"
+"Update ATP\n"
 "Run MoonRiver Node"
 "Run Cosmos Node"
 "Run Celo Node"
