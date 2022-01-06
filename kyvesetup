@@ -10,11 +10,9 @@ options=(
 "Install Docker"
 "Update ATP"
 "Run MoonRiver Node"
-\\n
 "Run Cosmos Node"
 "Run Celo Node"
 "Run Solana Node"
-\\n
 "Run Evmos EVM Node"
 "Run Evmos Tendermint Node"
 "Run Near Node"
