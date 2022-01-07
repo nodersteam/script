@@ -82,7 +82,7 @@ sudo journalctl -u stratosd -f
 break
 ;;
 
-#Exit
+# Exit
 
 "Exit")
 exit
