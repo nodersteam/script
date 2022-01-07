@@ -42,19 +42,24 @@ function install {
                 }
 
 function service {
-sudo tee <<EOF >/dev/null /etc/systemd/system/stratosd.service
-[Unit]
-Description=Stratos Node
-After=network-online.target
-[Service]
-User=$USER
-ExecStart=/usr/bin/stchaind start
-Restart=always
-RestartSec=10
-LimitNOFILE=10000
-[Install]
-WantedBy=multi-user.target
-EOF
+
+                echo "============================================================"
+                echo "Create service: "
+                echo "============================================================"
+		
+                sudo tee <<EOF >/dev/null /etc/systemd/system/stratosd.service
+                [Unit]
+                Description=Stratos Node
+                After=network-online.target
+                [Service]
+                User=$USER
+                ExecStart=/usr/bin/stchaind start
+                Restart=always
+                RestartSec=10
+                LimitNOFILE=10000
+                [Install]
+                WantedBy=multi-user.target
+                EOF
                 }
 
 function start {
