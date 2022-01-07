@@ -40,6 +40,15 @@ function install {
                 sed -i "s/mynode/"$NODENAME"/g" $HOME/.stchaind/config/config.toml
 }
 
+function delete {
+                sudo systemctl stop stratosd; sudo systemctl disable stratosd
+		sudo rm -Rvf $HOME/.stchaind $HOME/.stchaincli \
+		/usr/bin/stchaincli /usr/bin/stchaind \
+		$HOME/stratos/stchaind $HOME/stratos/stchaincli
+		sudo rm -v /etc/systemd/system/stratosd.service; \
+		sudo systemctl daemon-reload
+}
+
 function service {
 
                 echo "============================================================"
@@ -134,7 +143,7 @@ function info {
 }
 
                PS3='Select an action: '
-               options=("Prepare the server for installation" "Install node" "Exit")
+               options=("Prepare the server for installation" "Install node" "Exit" "Delete")
                select opt in "${options[@]}"
                do
                    case $opt in
@@ -143,7 +152,7 @@ function info {
                echo "============================================================"
                echo "Preparation has begun"
                echo "============================================================"
-      preparing
+preparing
                echo "============================================================"
                echo "The server is ready!"
                echo "============================================================"
@@ -154,18 +163,26 @@ break
                echo "============================================================"
                echo "Install has begun"
                echo "============================================================"
-      install
-      service
-      start
+install
+service
+start
       
                echo "============================================================"
                echo "Installation complete!"
                echo "============================================================"
 break
 ;;
-        "Exit")
-        exit
-        ;;
+"Delete")
+               echo "============================================================"
+               echo "Removal started"
+               echo "============================================================"
+	       delete
+break
+;;
+
+"Exit")
+exit
+;;
 *) echo "invalid option $REPLY";;
 esac
 done
