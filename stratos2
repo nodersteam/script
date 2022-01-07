@@ -25,6 +25,10 @@ function preparing {
 # Install
 
 function install {
+                echo "============================================================"
+                echo "Enter your node name: "
+                echo "============================================================"
+		read NODENAME
                 mkdir $HOME/stratos; cd $HOME/stratos; \
                 wget https://github.com/stratosnet/stratos-chain/releases/download/v0.5.0/stchaincli && \
                 wget https://github.com/stratosnet/stratos-chain/releases/download/v0.5.0/stchaind
