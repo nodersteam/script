@@ -54,7 +54,7 @@ stchaind init $nickname
 rm -vf $HOME/.stchaind/config/genesis* $HOME/.stchaind/config/config.toml && \
 wget -P $HOME/.stchaind/config/ https://raw.githubusercontent.com/stratosnet/stratos-chain-testnet/main/genesis.json && \
 wget -P $HOME/.stchaind/config/ https://raw.githubusercontent.com/stratosnet/stratos-chain-testnet/main/config.toml
-sed -i "s/mynode/"$NICKNAME"/g" $HOME/.stchaind/config/config.toml
+sed -i "s/mynode/"$nickname"/g" $HOME/.stchaind/config/config.toml
 
 sudo tee <<EOF >/dev/null /etc/systemd/system/stratosd.service
 [Unit]
