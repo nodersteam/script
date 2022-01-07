@@ -32,7 +32,7 @@ function install {
                 echo "Enter your Node name: "
                 echo "============================================================"
                 read NODENAME
-                echo "export NODENAME="$NODENAME"" >> ~/.bash_profile
+                echo "export NODENAME="$NODENAME" >> ~/.bash_profile
                 source ~/.bash_profile
                 stchaind init $nickname
                 rm -vf $HOME/.stchaind/config/genesis* $HOME/.stchaind/config/config.toml && \
@@ -83,7 +83,7 @@ function wallet {
                 --recover
                 }
 
-fuction addres {
+function addres {
                
                stchaincli keys list \
                --keyring-backend=test 
