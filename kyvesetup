@@ -256,7 +256,7 @@ echo "============================================================"
 echo "Enter stake amount: "
 echo "============================================================"
 read tendermint_stake
-ocker pull kyve/cosmos:latest && \
+docker pull kyve/cosmos:latest && \
 docker stop kyve-evmos_tendermint-node 2>/dev/null; \
 docker container rm kyve-evmos_tendermint-node 2>/dev/null; \
 docker run -d -it --restart=always \
