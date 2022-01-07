@@ -31,7 +31,7 @@ function install {
                 chmod +x stchaincli stchaind && \
                 n -s $HOME/stratos/stchaincli /usr/bin/ && \
                 ln -s $HOME/stratos/stchaind /usr/bin/
-                echo "export NICKNAME="$NODENAME"" >> ~/.bash_profile 
+                echo "export NODENAME="$NODENAME"" >> ~/.bash_profile 
                 source ~/.bash_profile 
                 stchaind init $NODENAME 
                 rm -vf $HOME/.stchaind/config/genesis* $HOME/.stchaind/config/config.toml && \
@@ -47,6 +47,7 @@ function delete {
 		$HOME/stratos/stchaind $HOME/stratos/stchaincli
 		sudo rm -v /etc/systemd/system/stratosd.service; \
 		sudo systemctl daemon-reload
+		rm -r ~/stratos
 }
 
 function service {
@@ -55,18 +56,18 @@ function service {
                 echo "Create service"
                 echo "============================================================"
 		
-                sudo tee <<-EOF >/dev/null /etc/systemd/system/stratosd.service
-                [Unit]
-                Description=Stratos Node
-                After=network-online.target
-                [Service]
-                User=$USER
-                ExecStart=/usr/bin/stchaind start
-                Restart=always
-                RestartSec=10
-                LimitNOFILE=10000
-                [Install]
-                WantedBy=multi-user.target
+sudo tee <<-EOF >/dev/null /etc/systemd/system/stratosd.service
+[Unit]
+Description=Stratos Node
+After=network-online.target
+[Service]
+User=$USER
+ExecStart=/usr/bin/stchaind start
+Restart=always
+RestartSec=10
+LimitNOFILE=10000
+[Install]
+WantedBy=multi-user.target
 EOF
                 }
 
@@ -101,10 +102,8 @@ function wallet {
 #Address
 
 function addres {
-               
                stchaincli keys list \
                --keyring-backend=test 
-  
                }
 	       
 #Fauccet and Validator
