@@ -66,6 +66,8 @@ function start {
                 echo "============================================================"
                 sudo journalctl -u stratosd -f
                 }
+		
+#Wallet
                 
 function wallet {
                 stchaincli keys add \
@@ -83,6 +85,8 @@ function wallet {
                 --keyring-backend=test $NODENAME
                 --recover
                 }
+		
+#Address
 
 function addres {
                
@@ -90,6 +94,8 @@ function addres {
                --keyring-backend=test 
   
                }
+	       
+#Fauccet and Validator
                
 function fauccet {
                curl -X POST https://faucet-test.thestratos.org/faucet/$WALLET_ADDRESS
@@ -113,6 +119,9 @@ function createValidator {
                | grep -oPm1 "(?<=^laddr = \")([^%]+)(?=\")"` \
                --from=$NODENAME
                }
+	       
+#Info
+	       
 function info {
                stchaincli query staking validator $(stchaincli keys show $NICKNAME \
                --bech val --address --keyring-backend test) \
