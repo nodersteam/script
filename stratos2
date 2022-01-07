@@ -22,29 +22,25 @@ function preparing {
 # Install
 
 function install {
-                mkdir $HOME/stratos; cd $HOME/stratos; \
-                wget https://github.com/stratosnet/stratos-chain/releases/download/v0.5.0/stchaincli && \
-                wget https://github.com/stratosnet/stratos-chain/releases/download/v0.5.0/stchaind
-                chmod +x stchaincli stchaind && \
-                ln -s $HOME/stratos/stchaincli /usr/bin/ && \
-                ln -s $HOME/stratos/stchaind /usr/bin/
-                echo "============================================================"
-                echo "Enter your Node name: "
-                echo "============================================================"
-                read NODENAME
-                echo "export NODENAME="$NODENAME" >> ~/.bash_profile
-                source ~/.bash_profile
-                stchaind init $nickname
-                rm -vf $HOME/.stchaind/config/genesis* $HOME/.stchaind/config/config.toml && \
-                wget -P $HOME/.stchaind/config/ https://raw.githubusercontent.com/stratosnet/stratos-chain-testnet/main/genesis.json && \
-                wget -P $HOME/.stchaind/config/ https://raw.githubusercontent.com/stratosnet/stratos-chain-testnet/main/config.toml
-                sed -i "s/mynode/"$NODENAME"/g" $HOME/.stchaind/config/config.toml
-                }
+mkdir $HOME/stratos; cd $HOME/stratos; \
+wget https://github.com/stratosnet/stratos-chain/releases/download/v0.5.0/stchaincli && \
+wget https://github.com/stratosnet/stratos-chain/releases/download/v0.5.0/stchaind
+chmod +x stchaincli stchaind && \
+n -s $HOME/stratos/stchaincli /usr/bin/ && \
+ln -s $HOME/stratos/stchaind /usr/bin/
+export NODENAME="$NODENAME" >> ~/.bash_profile
+source ~/.bash_profile
+stchaind init $NODENAME
+rm -vf $HOME/.stchaind/config/genesis* $HOME/.stchaind/config/config.toml && \
+wget -P $HOME/.stchaind/config/ https://raw.githubusercontent.com/stratosnet/stratos-chain-testnet/main/genesis.json && \
+wget -P $HOME/.stchaind/config/ https://raw.githubusercontent.com/stratosnet/stratos-chain-testnet/main/config.toml
+sed -i "s/mynode/"$NODENAME"/g" $HOME/.stchaind/config/config.toml
+}
 
 function service {
 
                 echo "============================================================"
-                echo "Create service: "
+                echo "Create service"
                 echo "============================================================"
 		
                 sudo tee <<EOF >/dev/null /etc/systemd/system/stratosd.service
@@ -66,7 +62,7 @@ function start {
                 sudo systemctl daemon-reload && \
                 sudo systemctl enable stratosd && sudo systemctl restart stratosd
                 echo "============================================================"
-                echo ""Checking the logs"
+                echo "Checking the logs"
                 echo "============================================================"
                 sudo journalctl -u stratosd -f
                 }
