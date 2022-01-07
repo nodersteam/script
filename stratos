@@ -47,14 +47,14 @@ ln -s $HOME/stratos/stchaind /usr/bin/
 echo "============================================================"
 echo "Enter your Node name: "
 echo "============================================================"
-read nickname
-echo "export NICKNAME="$nickname"" >> ~/.bash_profile
+read NODENAME
+echo "export NODENAME="$NODENAME"" >> ~/.bash_profile
 source ~/.bash_profile
 stchaind init $nickname
 rm -vf $HOME/.stchaind/config/genesis* $HOME/.stchaind/config/config.toml && \
 wget -P $HOME/.stchaind/config/ https://raw.githubusercontent.com/stratosnet/stratos-chain-testnet/main/genesis.json && \
 wget -P $HOME/.stchaind/config/ https://raw.githubusercontent.com/stratosnet/stratos-chain-testnet/main/config.toml
-sed -i "s/mynode/"$nickname"/g" $HOME/.stchaind/config/config.toml
+sed -i "s/mynode/"$NODENAME"/g" $HOME/.stchaind/config/config.toml
 
 echo "[Unit]
 Description=Stratos Node
@@ -76,7 +76,7 @@ EOF
 sudo systemctl daemon-reload && \
 sudo systemctl enable stratosd && sudo systemctl restart stratosd
 echo "============================================================"
-echo ""Checking the logs"
+echo "Checking the logs"
 echo "============================================================"
 sudo journalctl -u stratosd -f
 break
