@@ -1,0 +1,158 @@
+#!/bin/bash
+
+# Logo
+
+                echo "============================================================"
+                curl -s https://raw.githubusercontent.com/AlekseyMoskalev1/script/main/Noders.sh | bash
+                echo "============================================================"
+
+# Prepearing
+
+function preparing {
+                sudo apt-get update && sudo apt-get upgrade -y
+                sudo apt-get install tar curl ufw jq -y
+                wget https://golang.org/dl/go1.16.7.linux-amd64.tar.gz; \
+                rm -rv /usr/local/go; \
+                tar -C /usr/local -xzf go1.16.7.linux-amd64.tar.gz && \
+                rm -v go1.16.7.linux-amd64.tar.gz && \
+                echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> ~/.bash_profile && \
+                source ~/.bash_profile
+                }
+
+# Install
+
+function install {
+                mkdir $HOME/stratos; cd $HOME/stratos; \
+                wget https://github.com/stratosnet/stratos-chain/releases/download/v0.5.0/stchaincli && \
+                wget https://github.com/stratosnet/stratos-chain/releases/download/v0.5.0/stchaind
+                chmod +x stchaincli stchaind && \
+                ln -s $HOME/stratos/stchaincli /usr/bin/ && \
+                ln -s $HOME/stratos/stchaind /usr/bin/
+                echo "============================================================"
+                echo "Enter your Node name: "
+                echo "============================================================"
+                read NODENAME
+                echo "export NODENAME="$NODENAME"" >> ~/.bash_profile
+                source ~/.bash_profile
+                stchaind init $nickname
+                rm -vf $HOME/.stchaind/config/genesis* $HOME/.stchaind/config/config.toml && \
+                wget -P $HOME/.stchaind/config/ https://raw.githubusercontent.com/stratosnet/stratos-chain-testnet/main/genesis.json && \
+                wget -P $HOME/.stchaind/config/ https://raw.githubusercontent.com/stratosnet/stratos-chain-testnet/main/config.toml
+                sed -i "s/mynode/"$NODENAME"/g" $HOME/.stchaind/config/config.toml
+                }
+
+function service {
+sudo tee <<EOF >/dev/null /etc/systemd/system/stratosd.service
+[Unit]
+Description=Stratos Node
+After=network-online.target
+[Service]
+User=$USER
+ExecStart=/usr/bin/stchaind start
+Restart=always
+RestartSec=10
+LimitNOFILE=10000
+[Install]
+WantedBy=multi-user.target
+EOF
+                }
+
+function start {
+                sudo systemctl daemon-reload && \
+                sudo systemctl enable stratosd && sudo systemctl restart stratosd
+                echo "============================================================"
+                echo ""Checking the logs"
+                echo "============================================================"
+                sudo journalctl -u stratosd -f
+                }
+                
+function wallet {
+                stchaincli keys add \
+                --hd-path "m/44'/606'/0'/0/0" \
+                --keyring-backend=test $NODENAME
+                echo "============================================================"
+                echo "Write your mnemonic phrase in safe place"
+                echo "============================================================"
+                sleep 10
+                }
+                
+ function recoverWallet {
+                stchaincli keys add \
+                --hd-path "m/44'/606'/0'/0/0" \
+                --keyring-backend=test $NODENAME
+                --recover
+                }
+
+fuction addres {
+               
+               stchaincli keys list \
+               --keyring-backend=test 
+  
+               }
+               
+function fauccet {
+               curl -X POST https://faucet-test.thestratos.org/faucet/$WALLET_ADDRESS
+               }
+               
+function createValidator {
+               stchaincli tx staking create-validator \
+               --amount="1000000000ustos" \
+               --pubkey=$(stchaind tendermint show-validator) \
+               --moniker=$NODENAME \
+               --chain-id=stratos-testnet-3 \
+               --commission-max-change-rate="0.1" \
+               --commission-max-rate="0.5" \
+               --commission-rate="0.1" \
+               --min-self-delegation="1" \
+               --gas="auto" \
+               --gas-adjustment=1.5 \
+               --gas-prices="0.5ustos" \
+               --keyring-backend=test \
+               --node `cat "$HOME/.stchaind/config/config.toml" \
+               | grep -oPm1 "(?<=^laddr = \")([^%]+)(?=\")"` \
+               --from=$NODENAME
+               }
+function info {
+               stchaincli query staking validator $(stchaincli keys show $NICKNAME \
+               --bech val --address --keyring-backend test) \
+               --trust-node \
+               --node `cat "$HOME/.stchaind/config/config.toml" \
+               | grep -oPm1 "(?<=^laddr = \")([^%]+)(?=\")"`
+}
+
+               PS3='Select an action: '
+               options=("Prepare the server for installation" "Install node" "Exit")
+               select opt in "${options[@]}"
+               do
+                   case $opt in
+                   
+"Prepare the server for installation")
+               echo "============================================================"
+               echo "Preparation has begun"
+               echo "============================================================"
+			preparing
+               echo "============================================================"
+               echo "The server is ready!"
+               echo "============================================================"
+			break
+            ;;
+            
+"Install node")
+               echo "============================================================"
+               echo "Install has begun"
+               echo "============================================================"
+			install
+      service
+      start
+      
+               echo "============================================================"
+               echo "Installation complete!"
+               echo "============================================================"
+			break
+            ;;
+        "Exit")
+        exit
+        ;;
+*) echo "invalid option $REPLY";;
+esac
+done
