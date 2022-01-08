@@ -82,24 +82,6 @@ function start {
 sudo systemctl daemon-reload && \
 sudo systemctl enable stratosd && sudo systemctl restart stratosd
                 }
-function status {
-stchaincli status 2>&1 \
---node `cat "$HOME/.stchaind/config/config.toml" \
-| grep -oPm1 "(?<=^laddr = \")([^%]+)(?=\")"` \
-| jq ."sync_info"."latest_block_height"
-
-sleep 5
-
-stchaincli status 2>&1 \
---node `cat "$HOME/.stchaind/config/config.toml" \
-| grep -oPm1 "(?<=^laddr = \")([^%]+)(?=\")"` \
-| jq ."sync_info"."catching_up"
-
-                echo "============================================================"
-                echo "Node synchronization will end when the status is false"
-                echo "============================================================"
-
-}
 		
 #Wallet
                 
@@ -134,40 +116,63 @@ read WALLET_ADDRESS
 #Fauccet and Validator
                
 function fauccet {
-               curl -X POST https://faucet-test.thestratos.org/faucet/$WALLET_ADDRESS
+curl -X POST https://faucet-test.thestratos.org/faucet/$WALLET_ADDRESS
                }
                
 function createValidator {
-               stchaincli tx staking create-validator \
-               --amount="1000000000ustos" \
-               --pubkey=$(stchaind tendermint show-validator) \
-               --moniker=$NODENAME \
-               --chain-id=stratos-testnet-3 \
-               --commission-max-change-rate="0.1" \
-               --commission-max-rate="0.5" \
-               --commission-rate="0.1" \
-               --min-self-delegation="1" \
-               --gas="auto" \
-               --gas-adjustment=1.5 \
-               --gas-prices="0.5ustos" \
-               --keyring-backend=test \
-               --node `cat "$HOME/.stchaind/config/config.toml" \
-               | grep -oPm1 "(?<=^laddr = \")([^%]+)(?=\")"` \
-               --from=$NODENAME
+stchaincli tx staking create-validator \
+--amount="1000000000ustos" \
+--pubkey=$(stchaind tendermint show-validator) \
+--moniker=$NODENAME \
+--chain-id=stratos-testnet-3 \
+--commission-max-change-rate="0.1" \
+--commission-max-rate="0.5" \
+--commission-rate="0.1" \
+--min-self-delegation="1" \
+--gas="auto" \
+--gas-adjustment=1.5 \
+--gas-prices="0.5ustos" \
+--keyring-backend=test \
+--node `cat "$HOME/.stchaind/config/config.toml" \
+| grep -oPm1 "(?<=^laddr = \")([^%]+)(?=\")"` \
+--from=$NODENAME
                }
 	       
 #Info
 	       
 function info {
-               stchaincli query staking validator $(stchaincli keys show $NICKNAME \
-               --bech val --address --keyring-backend test) \
-               --trust-node \
-               --node `cat "$HOME/.stchaind/config/config.toml" \
-               | grep -oPm1 "(?<=^laddr = \")([^%]+)(?=\")"`
+stchaincli query staking validator $(stchaincli keys show $NICKNAME \
+--bech val --address --keyring-backend test) \
+--trust-node \
+--node `cat "$HOME/.stchaind/config/config.toml" \
+| grep -oPm1 "(?<=^laddr = \")([^%]+)(?=\")"`
+}
+
+function status {
+stchaincli status 2>&1 \
+--node `cat "$HOME/.stchaind/config/config.toml" \
+| grep -oPm1 "(?<=^laddr = \")([^%]+)(?=\")"` \
+| jq ."sync_info"."latest_block_height"
+stchaincli status 2>&1 \
+--node `cat "$HOME/.stchaind/config/config.toml" \
+| grep -oPm1 "(?<=^laddr = \")([^%]+)(?=\")"` \
+| jq ."sync_info"."catching_up"
+
+                echo "============================================================"
+                echo "Node synchronization will end when the status is false"
+                echo "============================================================"
+
+}
+
+function balance {
+                echo "============================================================"
+                echo "The balance will be displayed after the node is fully synchronized"
+                echo "============================================================"
+stchaincli query account $WALLET_ADDRESS
 }
 
                PS3='Select an action: '
-               options=("Prepare the server for installation" "Install node" "Check node status" "Exit" "Delete")
+               options=("Prepare the server for installation" "Install node" "Check node status" "Create wallet" "Recover wallet" "Balance" "Create validator" "Exit" "Delete")
                select opt in "${options[@]}"
                do
                    case $opt in
@@ -201,6 +206,30 @@ break
 
 status
 break
+;;
+
+"Create wallet")
+
+wallet
+addres
+fauccet
+break
+;;
+
+"Balance")
+balance
+break
+;;
+
+"Create validator")
+createValidator
+sleep10
+info
+               echo "============================================================"
+               echo "Validator created, tracking in explorer -
+	       https://explorer-test.thestratos.org/#/validators"
+               echo "============================================================"
+break	       
 ;;
 
 "Delete")
