@@ -198,7 +198,10 @@ break
 ;;
 
 "Check node status")
+
 status
+break
+;;
 
 "Delete")
                echo "============================================================"
