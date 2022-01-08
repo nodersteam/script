@@ -121,7 +121,7 @@ celestia-appd q bank balances $CELESTIA_ADDR
 
 
 PS3='Select an action: '
-options=("Prepare the server for installation" "Install node" "Check node status" "Balance" "Create validator" "Parametrs"  "Exit")
+options=("Prepare the server for installation" "Install node" "Check node status" "Request for tokens in Discord" "Balance" "Create validator"  "Parametrs"  "Exit")
 select opt in "${options[@]}"
                do
                    case $opt in
@@ -191,6 +191,17 @@ balance
                echo "Your address: " 
                echo $CELESTIA_ADDR
                echo "============================================================"
+break
+;;
+
+"Request for tokens in Discord")
+
+               echo "============================================================"
+               echo "To request tokens, you need to go to the Discord server in the
+               fauccet channel and request tokens in the format! Faucet <your adress>"
+               https://discord.com/invite/NEfhSscRSx
+               echo "============================================================"
+
 break
 ;;
 
