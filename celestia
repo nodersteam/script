@@ -1,0 +1,199 @@
+#!/bin/bash
+
+while true
+do
+
+# Logo
+
+                echo "============================================================"
+                curl -s https://raw.githubusercontent.com/AlekseyMoskalev1/script/main/Noders.sh | bash
+                echo "============================================================"
+
+# Prepearing
+
+function preparing {
+sudo apt update && sudo apt upgrade -y
+sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential git make ncdu -y
+ver="1.17.2"
+cd $HOME
+wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
+sudo rm -rf /usr/local/go
+sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz"
+rm "go$ver.linux-amd64.tar.gz"
+echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile
+source $HOME/.bash_profile
+                }
+
+# Install
+
+function celestiaApp {
+cd $HOME
+rm -r celestia-app
+git clone https://github.com/celestiaorg/celestia-app.git
+cd celestia-app/
+make install
+}
+
+function params {
+CELESTIA_CHAIN="devnet-2"
+echo 'export CELESTIA_CHAIN='$CELESTIA_CHAIN >> $HOME/.bash_profile
+echo 'export CELESTIA_NODENAME='${CELESTIA_NODENAME} >> $HOME/.bash_profile
+echo 'export CELESTIA_WALLET='${CELESTIA_WALLET} >> $HOME/.bash_profile
+source $HOME/.bash_profile
+celestia-appd init $CELESTIA_NODENAME --chain-id $CELESTIA_CHAIN
+cp $HOME/networks/devnet-2/genesis.json $HOME/.celestia-app/config/
+SEEDS="74c0c793db07edd9b9ec17b076cea1a02dca511f@46.101.28.34:26656"
+PEERS="34d4bfec8998a8fac6393a14c5ae151cf6a5762f@194.163.191.41:26656"
+sed -i.bak -e "s/^seeds *=.*/seeds = \"$SEEDS\"/; s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.celestia-app/config/config.toml
+external_address=$(wget -qO- eth0.me)
+sed -i.bak -e "s/^external_address = \"\"/external_address = \"$external_address:26656\"/" $HOME/.celestia-app/config/config.toml
+sed -i 's#"tcp://127.0.0.1:26657"#"tcp://0.0.0.0:26657"#g' $HOME/.celestia-app/config/config.toml
+sed -i 's/timeout_commit = "5s"/timeout_commit = "15s"/g' $HOME/.celestia-app/config/config.toml
+sed -i 's/index_all_keys = false/index_all_keys = true/g' $HOME/.celestia-app/config/config.toml
+sed -i '/\[api\]/{:a;n;/enabled/s/false/true/;Ta};/\[api\]/{:a;n;/enable/s/false/true/;Ta;}' $HOME/.celestia-app/config/app.toml
+celestia-appd unsafe-reset-all
+wget -O $HOME/.celestia-app/config/addrbook.json "http://62.171.191.122:8000/celestia/addrbook.json"
+}
+
+function client {
+celestia-appd config chain-id $CELESTIA_CHAIN
+celestia-appd config keyring-backend test
+                }
+                
+function service {
+sudo tee <<EOF >/dev/null /etc/systemd/system/celestia-appd.service
+[Unit]
+  Description=celestia-appd Cosmos daemon
+  After=network-online.target
+[Service]
+  User=$USER
+  ExecStart=$(which celestia-appd) start
+  Restart=on-failure
+  RestartSec=3
+  LimitNOFILE=4096
+[Install]
+  WantedBy=multi-user.target
+EOF
+
+sudo systemctl enable celestia-appd
+sudo systemctl daemon-reload
+sudo systemctl restart celestia-appd && journalctl -u celestia-appd.service -f
+                }
+                
+function keys {
+celestia-appd keys add $CELESTIA_WALLET
+CELESTIA_ADDR=$(celestia-appd keys show $CELESTIA_WALLET -a)
+echo $CELESTIA_ADDR
+echo 'export CELESTIA_ADDR='${CELESTIA_ADDR} >> $HOME/.bash_profile
+
+CELESTIA_VALOPER=$(celestia-appd keys show $CELESTIA_WALLET --bech val -a)
+echo $CELESTIA_VALOPER
+echo 'export CELESTIA_VALOPER='${CELESTIA_VALOPER} >> $HOME/.bash_profile
+source $HOME/.bash_profile
+                }
+
+function status {
+curl -s localhost:26657/status | jq .result | jq .sync_info
+}
+
+function validator {
+celestia-appd tx staking create-validator \
+ --amount=1050000celes \
+ --pubkey=$(celestia-appd tendermint show-validator) \
+ --moniker=$CELESTIA_NODENAME \
+ --chain-id=$CELESTIA_CHAIN \
+ --commission-rate=0.1 \
+ --commission-max-rate=0.2 \
+ --commission-max-change-rate=0.01 \
+ --min-self-delegation=1000000 \
+ --from=$CELESTIA_WALLET
+}
+
+function parametrs {
+echo $CELESTIA_NODENAME $CELESTIA_CHAIN $CELESTIA_WALLET
+}
+
+function balance {
+celestia-appd q bank balances $CELESTIA_ADDR
+}
+
+
+PS3='Select an action: '
+options=("Prepare the server for installation" "Install node" "Check node status" "Parametrs" "Balance" "Create validator" "Exit")
+select opt in "${options[@]}"
+               do
+                   case $opt in
+                   
+"Prepare the server for installation")
+               echo "============================================================"
+               echo "Preparation has begun"
+               echo "============================================================"
+preparing
+               echo "============================================================"
+               echo "The server is ready!"
+               echo "============================================================"
+break
+;;
+            
+"Install node")
+                echo "============================================================"
+                echo "Set parameters"
+                echo "============================================================"
+                echo "Enter NodName:"
+                echo "============================================================"
+read CELESTIA_NODENAME
+                echo "============================================================"
+                echo "Enter WalletName:"
+                echo "============================================================"
+read CELESTIA_WALLET
+install
+params
+client
+service
+keys
+               echo "============================================================"
+               echo "Installation complete!"
+               echo "============================================================"
+break
+;;
+
+"Check node status")
+               echo "============================================================"
+               echo "Synchronization status must be false to continue!"
+               echo "============================================================"
+status
+break
+;;
+
+"Create validator")
+               echo "============================================================"
+               echo "Synchronization status must be false to continue!"
+               echo "============================================================"
+validator
+break
+;;
+
+"Parametrs")
+               echo "============================================================"
+               echo "Your parameters"
+               echo "============================================================"
+parametrs
+break
+;;
+
+"Balance")
+               echo "============================================================"
+               echo "Your balance"
+               echo "============================================================"
+balance
+break
+;;
+
+"Exit")
+exit
+;;
+
+*) echo "invalid option $REPLY";;
+esac
+done
+done
