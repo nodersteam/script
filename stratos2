@@ -226,8 +226,8 @@ createValidator
 sleep10
 info
                echo "============================================================"
-               echo "Validator created, tracking in explorer -
-	       https://explorer-test.thestratos.org/#/validators"
+               echo "Tracking in explorer -
+https://explorer-test.thestratos.org/#/validators"
                echo "============================================================"
 break	       
 ;;
