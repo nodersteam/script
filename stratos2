@@ -141,7 +141,7 @@ stchaincli tx staking create-validator \
 #Info
 	       
 function info {
-stchaincli query staking validator $(stchaincli keys show $NICKNAME \
+stchaincli query staking validator $(stchaincli keys show $NODENAME \
 --bech val --address --keyring-backend test) \
 --trust-node \
 --node `cat "$HOME/.stchaind/config/config.toml" \
