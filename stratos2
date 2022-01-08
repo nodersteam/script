@@ -221,7 +221,7 @@ break
 
 "Create validator")
 createValidator
-sleep10
+sleep 5
 info
                echo "============================================================"
                echo "Tracking in explorer -
