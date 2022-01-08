@@ -12,14 +12,13 @@ do
 # Prepearing
 
 function preparing {
-                sudo apt-get update && sudo apt-get upgrade -y
-                sudo apt-get install tar curl ufw jq -y
-                wget https://golang.org/dl/go1.16.7.linux-amd64.tar.gz; \
-                rm -rv /usr/local/go; \
-                tar -C /usr/local -xzf go1.16.7.linux-amd64.tar.gz && \
-                rm -v go1.16.7.linux-amd64.tar.gz && \
-                echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> ~/.bash_profile && \
-                source ~/.bash_profile
+wget https://golang.org/dl/go1.16.7.linux-amd64.tar.gz; \
+rm -rv /usr/local/go; \
+tar -C /usr/local -xzf go1.16.7.linux-amd64.tar.gz && \
+rm -v go1.16.7.linux-amd64.tar.gz && \
+echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> ~/.bash_profile && \
+source ~/.bash_profile && \
+go version
                 }
 
 # Install
@@ -28,30 +27,34 @@ function install {
                 echo "============================================================"
                 echo "Enter your node name: "
                 echo "============================================================"
-		read NODENAME
-                mkdir $HOME/stratos; cd $HOME/stratos; \
-                wget https://github.com/stratosnet/stratos-chain/releases/download/v0.5.0/stchaincli && \
-                wget https://github.com/stratosnet/stratos-chain/releases/download/v0.5.0/stchaind
-                chmod +x stchaincli stchaind && \
-                n -s $HOME/stratos/stchaincli /usr/bin/ && \
-                ln -s $HOME/stratos/stchaind /usr/bin/
-                echo "export NODENAME="$NODENAME"" >> ~/.bash_profile 
-                source ~/.bash_profile 
-                stchaind init $NODENAME 
-                rm -vf $HOME/.stchaind/config/genesis* $HOME/.stchaind/config/config.toml && \
-                wget -P $HOME/.stchaind/config/ https://raw.githubusercontent.com/stratosnet/stratos-chain-testnet/main/genesis.json && \
-                wget -P $HOME/.stchaind/config/ https://raw.githubusercontent.com/stratosnet/stratos-chain-testnet/main/config.toml
-                sed -i "s/mynode/"$NODENAME"/g" $HOME/.stchaind/config/config.toml
+read NODENAME
+mkdir $HOME/stratos; cd $HOME/stratos; \
+wget https://github.com/stratosnet/stratos-chain/releases/download/v0.5.0/stchaincli && \
+wget https://github.com/stratosnet/stratos-chain/releases/download/v0.5.0/stchaind
+chmod +x stchaincli stchaind && \
+ln -s $HOME/stratos/stchaincli /usr/bin/ && \
+ln -s $HOME/stratos/stchaind /usr/bin/
+echo "export NODENAME="$NODENAME"" >> ~/.bash_profile 
+source ~/.bash_profile 
+stchaind init $NODENAME 
+rm -vf $HOME/.stchaind/config/genesis* $HOME/.stchaind/config/config.toml && \
+wget -P $HOME/.stchaind/config/ https://raw.githubusercontent.com/stratosnet/stratos-chain-testnet/main/genesis.json && \
+wget -P $HOME/.stchaind/config/ https://raw.githubusercontent.com/stratosnet/stratos-chain-testnet/main/config.toml
+sed -i "s/mynode/"$NODENAME"/g" $HOME/.stchaind/config/config.toml
 }
 
 function delete {
-                sudo systemctl stop stratosd; sudo systemctl disable stratosd
-		sudo rm -Rvf $HOME/.stchaind $HOME/.stchaincli \
-		/usr/bin/stchaincli /usr/bin/stchaind \
-		$HOME/stratos/stchaind $HOME/stratos/stchaincli
-		sudo rm -v /etc/systemd/system/stratosd.service; \
-		sudo systemctl daemon-reload
-		rm -r ~/stratos
+                echo "============================================================"
+                echo "Removal started"
+                echo "============================================================"
+
+sudo systemctl stop stratosd; sudo systemctl disable stratosd
+sudo rm -Rvf $HOME/.stchaind $HOME/.stchaincli \
+/usr/bin/stchaincli /usr/bin/stchaind \
+$HOME/stratos/stchaind $HOME/stratos/stchaincli
+sudo rm -v /etc/systemd/system/stratosd.service; \
+sudo systemctl daemon-reload
+rm -r ~/stratos
 }
 
 function service {
@@ -82,6 +85,8 @@ function start {
                 echo "Checking the logs"
                 echo "============================================================"
                 sudo journalctl -u stratosd -f
+		sleep 10
+		cd
                 }
 		
 #Wallet
