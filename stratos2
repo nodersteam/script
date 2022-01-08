@@ -12,6 +12,8 @@ do
 # Prepearing
 
 function preparing {
+sudo apt-get update && sudo apt-get upgrade -y
+sudo apt-get install tar curl ufw jq -y
 wget https://golang.org/dl/go1.16.7.linux-amd64.tar.gz; \
 rm -rv /usr/local/go; \
 tar -C /usr/local -xzf go1.16.7.linux-amd64.tar.gz && \
