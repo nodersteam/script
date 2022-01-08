@@ -79,40 +79,56 @@ EOF
                 }
 
 function start {
-                sudo systemctl daemon-reload && \
-                sudo systemctl enable stratosd && sudo systemctl restart stratosd
-                echo "============================================================"
-                echo "Checking the logs"
-                echo "============================================================"
-                sudo journalctl -u stratosd -f
-		sleep 10
-		cd
+sudo systemctl daemon-reload && \
+sudo systemctl enable stratosd && sudo systemctl restart stratosd
                 }
+function status {
+stchaincli status 2>&1 \
+--node `cat "$HOME/.stchaind/config/config.toml" \
+| grep -oPm1 "(?<=^laddr = \")([^%]+)(?=\")"` \
+| jq ."sync_info"."latest_block_height"
+
+sleep 5
+
+stchaincli status 2>&1 \
+--node `cat "$HOME/.stchaind/config/config.toml" \
+| grep -oPm1 "(?<=^laddr = \")([^%]+)(?=\")"` \
+| jq ."sync_info"."catching_up"
+
+                echo "============================================================"
+                echo "Node synchronization will end when the status is false"
+                echo "============================================================"
+
+}
 		
 #Wallet
                 
 function wallet {
-                stchaincli keys add \
-                --hd-path "m/44'/606'/0'/0/0" \
-                --keyring-backend=test $NODENAME
+stchaincli keys add \
+--hd-path "m/44'/606'/0'/0/0" \
+--keyring-backend=test $NODENAME
                 echo "============================================================"
                 echo "Write your mnemonic phrase in safe place"
                 echo "============================================================"
-                sleep 10
+sleep 10
                 }
                 
  function recoverWallet {
-                stchaincli keys add \
-                --hd-path "m/44'/606'/0'/0/0" \
-                --keyring-backend=test $NODENAME
-                --recover
+stchaincli keys add \
+--hd-path "m/44'/606'/0'/0/0" \
+--keyring-backend=test $NODENAME
+--recover
                 }
 		
 #Address
 
 function addres {
-               stchaincli keys list \
-               --keyring-backend=test 
+stchaincli keys list \
+--keyring-backend=test
+                echo "============================================================"
+                echo "Copy and paste your wallet address: "
+                echo "============================================================"
+read WALLET_ADDRESS
                }
 	       
 #Fauccet and Validator
@@ -151,7 +167,7 @@ function info {
 }
 
                PS3='Select an action: '
-               options=("Prepare the server for installation" "Install node" "Exit" "Delete")
+               options=("Prepare the server for installation" "Install node" "Check node status" "Exit" "Delete")
                select opt in "${options[@]}"
                do
                    case $opt in
@@ -180,6 +196,10 @@ start
                echo "============================================================"
 break
 ;;
+
+"Check node status")
+status
+
 "Delete")
                echo "============================================================"
                echo "Removal started"
