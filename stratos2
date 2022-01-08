@@ -24,10 +24,6 @@ go version
 # Install
 
 function install {
-                echo "============================================================"
-                echo "Enter your node name: "
-                echo "============================================================"
-read NODENAME
 mkdir $HOME/stratos; cd $HOME/stratos; \
 wget https://github.com/stratosnet/stratos-chain/releases/download/v0.5.0/stchaincli && \
 wget https://github.com/stratosnet/stratos-chain/releases/download/v0.5.0/stchaind
@@ -107,10 +103,6 @@ stchaincli keys add \
 function addres {
 stchaincli keys list \
 --keyring-backend=test
-                echo "============================================================"
-                echo "Copy and paste your wallet address: "
-                echo "============================================================"
-read WALLET_ADDRESS
                }
 	       
 #Fauccet and Validator
@@ -192,6 +184,10 @@ break
                echo "============================================================"
                echo "Install has begun"
                echo "============================================================"
+	       echo "============================================================"
+               echo "Enter your node name: "
+               echo "============================================================"
+read NODENAME
 install
 service
 start
@@ -203,15 +199,17 @@ break
 ;;
 
 "Check node status")
-
 status
 break
 ;;
 
 "Create wallet")
-
 wallet
 addres
+                echo "============================================================"
+                echo "Copy and paste your wallet address: "
+                echo "============================================================"
+read WALLET_ADDRESS
 fauccet
 break
 ;;
