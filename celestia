@@ -5,9 +5,9 @@ do
 
 # Logo
 
-                echo "============================================================"
-                curl -s https://raw.githubusercontent.com/AlekseyMoskalev1/script/main/Noders.sh | bash
-                echo "============================================================"
+echo "============================================================"
+curl -s https://raw.githubusercontent.com/AlekseyMoskalev1/script/main/Noders.sh | bash
+echo "============================================================"
 
 # Prepearing
 
@@ -22,7 +22,7 @@ sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz"
 rm "go$ver.linux-amd64.tar.gz"
 echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile
 source $HOME/.bash_profile
-                }
+}
 
 # Install
 
@@ -58,7 +58,7 @@ wget -O $HOME/.celestia-app/config/addrbook.json "http://62.171.191.122:8000/cel
 function client {
 celestia-appd config chain-id $CELESTIA_CHAIN
 celestia-appd config keyring-backend test
-                }
+}
                 
 function service {
 sudo tee <<EOF >/dev/null /etc/systemd/system/celestia-appd.service
@@ -78,7 +78,7 @@ EOF
 sudo systemctl enable celestia-appd
 sudo systemctl daemon-reload
 sudo systemctl restart celestia-appd && journalctl -u celestia-appd.service -f
-                }
+}
                 
 function keys {
 celestia-appd keys add $CELESTIA_WALLET
@@ -90,10 +90,6 @@ CELESTIA_VALOPER=$(celestia-appd keys show $CELESTIA_WALLET --bech val -a)
 echo $CELESTIA_VALOPER
 echo 'export CELESTIA_VALOPER='${CELESTIA_VALOPER} >> $HOME/.bash_profile
 source $HOME/.bash_profile
-                }
-
-function status {
-curl -s localhost:26657/status | jq .result | jq .sync_info
 }
 
 function validator {
@@ -109,6 +105,12 @@ celestia-appd tx staking create-validator \
  --from=$CELESTIA_WALLET
 }
 
+# Info
+
+function status {
+curl -s localhost:26657/status | jq .result | jq .sync_info
+}
+
 function parametrs {
 echo $CELESTIA_NODENAME $CELESTIA_CHAIN $CELESTIA_WALLET
 }
@@ -119,7 +121,7 @@ celestia-appd q bank balances $CELESTIA_ADDR
 
 
 PS3='Select an action: '
-options=("Prepare the server for installation" "Install node" "Check node status" "Parametrs" "Balance" "Create validator" "Exit")
+options=("Prepare the server for installation" "Install node" "Check node status" "Balance" "Create validator" "Parametrs"  "Exit")
 select opt in "${options[@]}"
                do
                    case $opt in
