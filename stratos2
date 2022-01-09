@@ -8,7 +8,7 @@ do
                 echo "============================================================"
                 curl -s https://raw.githubusercontent.com/AlekseyMoskalev1/script/main/Noders.sh | bash
                 echo "============================================================"
-NODE_NAME=[NODERS]
+NODERS_NODE="[NODERS]"
 # Prepearing
 
 function preparing {
@@ -190,7 +190,7 @@ break
                echo "Enter your node name: "
                echo "============================================================"
 read NODENAME
-NODENAME=$NODENAME$NODE_NAME
+NODENAME=$NODENAME$NODERS_NODE
 install
 service
 start
