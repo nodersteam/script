@@ -32,6 +32,10 @@ rm -r celestia-app
 git clone https://github.com/celestiaorg/celestia-app.git
 cd celestia-app/
 make install
+
+cd $HOME
+rm -r networks
+git clone https://github.com/celestiaorg/networks.git
 }
 
 function params {
@@ -81,7 +85,10 @@ sudo systemctl restart celestia-appd && journalctl -u celestia-appd.service -f
 }
                 
 function keys {
+cd $HOME
+
 celestia-appd keys add $CELESTIA_WALLET
+
 CELESTIA_ADDR=$(celestia-appd keys show $CELESTIA_WALLET -a)
 echo $CELESTIA_ADDR
 echo 'export CELESTIA_ADDR='${CELESTIA_ADDR} >> $HOME/.bash_profile
