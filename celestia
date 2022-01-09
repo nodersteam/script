@@ -148,7 +148,7 @@ read CELESTIA_NODENAME
                 echo "Enter WalletName:"
                 echo "============================================================"
 read CELESTIA_WALLET
-install
+celestiaApp
 params
 client
 service
