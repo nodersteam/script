@@ -8,7 +8,7 @@ do
 echo "============================================================"
 curl -s https://raw.githubusercontent.com/AlekseyMoskalev1/script/main/Noders.sh | bash
 echo "============================================================"
-NODERS_NODE=" NODERS"
+
 
 PS3='Select an action: '
 options=("Prepare the server for installation" "Install node" "Check node status" "Request for tokens in Discord" "Balance" "Create validator"  "Parametrs"  "Exit")
@@ -39,6 +39,7 @@ break
 ;;
             
 "Install node")
+NODERS_NODE="[NODERS]"
                 echo "============================================================"
                 echo "Set parameters"
                 echo "============================================================"
@@ -53,6 +54,7 @@ CELESTIA_NODENAME=$CELESTIA_NODENAME$NODERS_NODE
                 echo "============================================================"
                 
 read CELESTIA_WALLET
+CELESTIA_WALLET=$CELESTIA_WALLET$NODERS_NODE
 
 cd $HOME
 rm -r celestia-app
