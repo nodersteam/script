@@ -198,7 +198,7 @@ break
 
                echo "============================================================"
                echo "To request tokens, you need to go to the Discord server in the
-fauccet channel and request tokens in the format! Faucet <your adress> 
+fauccet channel and request tokens in the format !faucet <your adress> .
 Server in Discord - https://discord.com/invite/NEfhSscRSx"
                echo "============================================================"
 
