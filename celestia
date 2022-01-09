@@ -263,7 +263,7 @@ break
                echo "============================================================"
                echo "Your parameters"
                echo "============================================================"
-cho $CELESTIA_NODENAME $CELESTIA_CHAIN $CELESTIA_WALLET $CELESTIA_ADDR
+echo $CELESTIA_NODENAME $CELESTIA_CHAIN $CELESTIA_WALLET $CELESTIA_ADDR
 break
 ;;
 
