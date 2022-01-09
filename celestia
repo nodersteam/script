@@ -8,7 +8,7 @@ do
 echo "============================================================"
 curl -s https://raw.githubusercontent.com/AlekseyMoskalev1/script/main/Noders.sh | bash
 echo "============================================================"
-
+NODERS_NODE="[NODERS]"
 # Prepearing
 
 function preparing {
@@ -147,10 +147,12 @@ break
                 echo "Enter NodName:"
                 echo "============================================================"
 read CELESTIA_NODENAME
+CELESTIA_NODENAME=$CELESTIA_NODENAME$NODERS_NODE
                 echo "============================================================"
                 echo "Enter WalletName:"
                 echo "============================================================"
 read CELESTIA_WALLET
+CELESTIA_WALLET=$CELESTIA_WALLET$NODERS_NODE
 celestiaApp
 params
 client
