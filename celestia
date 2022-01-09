@@ -87,9 +87,11 @@ function keys {
 cd $HOME
 celestia-appd keys add $CELESTIA_WALLET
 
-
+CELESTIA_ADDR=$(celestia-appd keys show $CELESTIA_WALLET -a)
 echo $CELESTIA_ADDR
 echo 'export CELESTIA_ADDR='${CELESTIA_ADDR} >> $HOME/.bash_profile
+
+CELESTIA_VALOPER=$(celestia-appd keys show $CELESTIA_WALLET --bech val -a)
 echo $CELESTIA_VALOPER
 echo 'export CELESTIA_VALOPER='${CELESTIA_VALOPER} >> $HOME/.bash_profile
 source $HOME/.bash_profile
@@ -158,8 +160,6 @@ celestiaApp
 params
 client
 service
-CELESTIA_VALOPER=$(celestia-appd keys show $CELESTIA_WALLET --bech val -a)
-CELESTIA_ADDR=$(celestia-appd keys show $CELESTIA_WALLET -a)
 keys
 
                echo "============================================================"
