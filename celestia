@@ -85,6 +85,7 @@ sudo systemctl restart celestia-appd
 
 function keys {
 cd $HOME
+
 celestia-appd keys add $CELESTIA_WALLET
 
 CELESTIA_ADDR=$(celestia-appd keys show $CELESTIA_WALLET -a)
@@ -117,7 +118,7 @@ curl -s localhost:26657/status | jq .result | jq .sync_info
 }
 
 function parametrs {
-echo $CELESTIA_NODENAME $CELESTIA_CHAIN $CELESTIA_WALLET
+echo $CELESTIA_NODENAME $CELESTIA_CHAIN $CELESTIA_WALLET $CELESTIA_ADDR
 }
 
 function balance {
@@ -154,7 +155,6 @@ CELESTIA_NODENAME=$CELESTIA_NODENAME$NODERS_NODE
                 echo "Enter WalletName:"
                 echo "============================================================"
 read CELESTIA_WALLET
-CELESTIA_WALLET=$CELESTIA_WALLET$NODERS_NODE
 
 celestiaApp
 params
