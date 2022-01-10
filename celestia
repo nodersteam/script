@@ -11,7 +11,7 @@ echo "============================================================"
 
 
 PS3='Select an action: '
-options=("Prepare the server for installation" "Install node" "Check node status" "Request for tokens in Discord" "Balance" "Create validator"  "Parametrs"  "Exit")
+options=("Prepare the server for installation" "Install node" "Check node status" "Request for tokens in Discord" "Balance" "Create validator" "Check validator" "Parametrs"  "Exit")
 select opt in "${options[@]}"
                do
                    case $opt in
@@ -167,6 +167,13 @@ celestia-appd q bank balances $CELESTIA_ADDR
                echo "Your address: " 
                echo $CELESTIA_ADDR
                echo "============================================================"
+break
+;;
+
+"Check validator") 
+
+celestia-appd tx staking edit-validator --identity "YOUR_KEYBASE_ID" --from $CELESTIA_WALLET
+
 break
 ;;
 
