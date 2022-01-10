@@ -172,7 +172,7 @@ break
 
 "Check validator") 
 
-celestia-appd tx staking edit-validator --identity "YOUR_KEYBASE_ID" --from $CELESTIA_WALLET
+celestia-appd q staking validator $CELESTIA_VALOPER
 
 break
 ;;
