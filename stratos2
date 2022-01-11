@@ -217,6 +217,11 @@ fauccet
 break
 ;;
 
+"Recover wallet")
+recoverWallet
+break
+;;
+
 "Balance")
 balance
 break
