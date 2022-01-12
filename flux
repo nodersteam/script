@@ -69,12 +69,11 @@ break
 break
 ;;
 
-"Login near network")
-near login
-
+"Login near network")                
                 echo "============================================================"
                 echo "Copy the link above, paste it into your browser window and allow the connection"
                 echo "============================================================"
+near login
 break
 ;;
 
@@ -89,6 +88,7 @@ break
 ;;
 
 "Install node")
+apt install git -y
 cd $HOME
 git clone https://github.com/fluxprotocol/oracle-validator-node.git
 cd oracle-validator-node
@@ -105,7 +105,7 @@ DB_NAME = flux_db
 ACTIVATED_PROVIDERS = near
 # NEAR options
 NEAR_CREDENTIALS_STORE_PATH = $HOME/.near-credentials/
-NEAR_ACCOUNT_ID = $FLUX_ACCOUNT_ID
+NEAR_ACCOUNT_ID = $FLUX_WALLET
 NEAR_RPC = https://rpc.testnet.near.org
 NEAR_CONTRACT_ID = 07.oracle.flux-dev
 NEAR_NETWORK_ID = testnet
