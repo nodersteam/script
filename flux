@@ -11,7 +11,7 @@ echo "============================================================"
 
 
 PS3='Select an action: '
-options=("Prepare the server for installation" "Actions outside server" "Create wallet" "Login near network" "Faucet" "Install node" ""Check node status"" "Exit")
+options=("Prepare the server for installation" "Actions outside server" "Create wallet" "Login near network" "Faucet" "Install node" "Check node status" "Exit")
 select opt in "${options[@]}"
                do
                    case $opt in
