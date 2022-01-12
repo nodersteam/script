@@ -42,11 +42,10 @@ npm install -g npm@8.3.0
                echo "============================================================"
 break
 ;;
-
-USERNAME=$(whoami)
-SERVER_IP=$(wget -qO- eth0.me)
             
 "Actions outside server")
+USERNAME=$(whoami)
+SERVER_IP=$(wget -qO- eth0.me)
                 echo "============================================================"
                 echo "Next, you will need to work in the terminal of your desktop computer. 
 Go to your terminal (if you are working under Windows - in the
