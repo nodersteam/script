@@ -184,7 +184,7 @@ break
 fauccet channel and request tokens.
 Server in Discord - https://discord.com/invite/NEfhSscRSx"
                echo "============================================================"
-               echo "Copy and paste this \033[32m !faucet $CELESTIA_ADDR"
+               echo -e "Copy and paste this \033[32m !faucet $CELESTIA_ADDR \033[37m"
                echo "============================================================"
 
 break
