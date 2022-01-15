@@ -122,7 +122,7 @@ break
 
 "Create wallet")
                echo "============================================================"
-               echo "Your wallet name $TGRADE_WALLE"
+               echo "Your wallet name $TGRADE_WALLET"
                echo "============================================================"
 
 #Create wallet
