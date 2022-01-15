@@ -112,7 +112,7 @@ break
 
 read TGRADE_WALLET
 source $HOME/.bash_profile
-tgrade keys $TGRADE_WALLET
+tgrade keys add $TGRADE_WALLET
 break
 ;;
 
