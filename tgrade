@@ -21,7 +21,7 @@ select opt in "${options[@]}"
                echo "Preparation has begun"
                echo "============================================================"
 
-# Update apt curl make 
+# Update apt curl make essenrial
 
 sudo apt update && sudo apt upgrade -y
 sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential git make ncdu -y
@@ -39,8 +39,10 @@ break
 ;;
             
 "Install node")
+
 NODERS_NODE="[NODERS]"
 CHAIN_ID=tgrade-testnet-3
+
                 echo "============================================================"
                 echo "Set parameters"
                 echo "============================================================"
@@ -49,7 +51,6 @@ CHAIN_ID=tgrade-testnet-3
                 
 read TGRADE_NODENAME
 TGRADE_NODENAME=$TGRADE_NODENAME$NODERS_NODE
-source $HOME/.bash_profile
 
 #CloneTGRADE
 
@@ -97,6 +98,7 @@ break
 ;;
 
 "Check node status")
+
                echo "============================================================"
                echo "Synchronization status must be false!"
                echo "============================================================"
@@ -110,13 +112,16 @@ break
                echo "Enter your wallet name:"
                echo "============================================================"
 
+#Create wallet
+
 read TGRADE_WALLET
-source $HOME/.bash_profile
 tgrade keys add $TGRADE_WALLET
+
 break
 ;;
 
 "Create validator")
+
                echo "============================================================"
                echo "Enter your validator name:"
                echo "============================================================"
@@ -129,13 +134,16 @@ tgrade tx poe create-validator \
   --moniker "$TGRADE_NODENAME" \
   --fees 15000utgd \
   --node https://rpc.testnet-3.tgrade.io:443
+  
 break
 ;;
 
 "Parametrs")
+
                echo "============================================================"
                echo "Your parameters"
                echo "============================================================"
+               
 echo $TGRADE_NODENAME $TGRADE_WALLET
 break
 ;;
