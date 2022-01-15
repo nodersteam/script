@@ -41,16 +41,29 @@ break
 "Install node")
 
 NODERS_NODE="[NODERS]"
-CHAIN_ID=tgrade-testnet-3
 
                 echo "============================================================"
                 echo "Set parameters"
                 echo "============================================================"
                 echo "Enter Node name:"
                 echo "============================================================"
-                
+
 read TGRADE_NODENAME
-TGRADE_NODENAME=$TGRADE_NODENAME$NODERS_NODE >> $HOME/.bash_profile
+TGRADE_NODENAME=$TGRADE_NODENAME$NODERS_NODE
+
+                echo "============================================================"
+                echo "Enter Wallet name:"
+                echo "============================================================"
+
+read TGRADE_WALLET              
+TGRADE_WALLET=$TGRADE_WALLET$NODERS_NODE
+
+CHAIN_ID=tgrade-testnet-3
+
+echo 'export CHAIN_ID='$CHAIN_ID >> $HOME/.bash_profile
+echo 'export TGRADE_NODENAME='${TGRADE_NODENAME} >> $HOME/.bash_profile
+echo 'export TGRADE_WALLET='${TGRADE_WALLET} >> $HOME/.bash_profile
+source $HOME/.bash_profile
 
 #CloneTGRADE
 
@@ -109,12 +122,11 @@ break
 
 "Create wallet")
                echo "============================================================"
-               echo "Enter your wallet name:"
+               echo "Your wallet name $TGRADE_WALLE"
                echo "============================================================"
 
 #Create wallet
 
-read TGRADE_WALLET
 tgrade keys add $TGRADE_WALLET
 
 break
@@ -123,7 +135,7 @@ break
 "Create validator")
 
                echo "============================================================"
-               echo "Name your validator $TGRADE_NODENAME"
+               echo "Name your validator $TGRADE_NODENAME "
                echo "============================================================"
           
 tgrade tx poe create-validator \
