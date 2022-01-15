@@ -123,7 +123,7 @@ break
 "Create validator")
 
                echo "============================================================"
-               echo "Enter your validator name:"
+               echo "Name your validator $TGRADE_NODENAME"
                echo "============================================================"
           
 tgrade tx poe create-validator \
