@@ -9,6 +9,11 @@ echo "============================================================"
 curl -s https://raw.githubusercontent.com/AlekseyMoskalev1/script/main/Noders.sh | bash
 echo "============================================================"
 
+echo 'export CHAIN_ID='$CHAIN_ID >> $HOME/.bash_profile
+echo 'export TGRADE_NODENAME='${TGRADE_NODENAME} >> $HOME/.bash_profile
+echo 'export TGRADE_WALLET='${TGRADE_WALLET} >> $HOME/.bash_profile
+source $HOME/.bash_profile
+
 
 PS3='Select an action: '
 options=("Prepare the server for installation" "Install node" "Check node status" "Create wallet" "Request for tokens and balance in Discord"  "Create validator" "Parametrs"  "Exit")
