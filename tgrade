@@ -9,12 +9,6 @@ echo "============================================================"
 curl -s https://raw.githubusercontent.com/AlekseyMoskalev1/script/main/Noders.sh | bash
 echo "============================================================"
 
-echo 'export CHAIN_ID='$CHAIN_ID >> $HOME/.bash_profile
-echo 'export TGRADE_NODENAME='${TGRADE_NODENAME} >> $HOME/.bash_profile
-echo 'export TGRADE_WALLET='${TGRADE_WALLET} >> $HOME/.bash_profile
-source $HOME/.bash_profile
-
-
 PS3='Select an action: '
 options=("Prepare the server for installation" "Install node" "Check node status" "Create wallet" "Request for tokens and balance in Discord"  "Create validator" "Parametrs"  "Exit")
 select opt in "${options[@]}"
@@ -54,21 +48,18 @@ NODERS_NODE="[NODERS]"
                 echo "============================================================"
 
 read TGRADE_NODENAME
-TGRADE_NODENAME=$TGRADE_NODENAME$NODERS_NODE
+TGRADE_NODENAME=$TGRADE_NODENAME$NODERS_NODE >> $HOME/.bash_profile
 
                 echo "============================================================"
                 echo "Enter Wallet name:"
                 echo "============================================================"
 
 read TGRADE_WALLET              
-TGRADE_WALLET=$TGRADE_WALLET$NODERS_NODE
+TGRADE_WALLET=$TGRADE_WALLET$NODERS_NODE >> $HOME/.bash_profile
 
-CHAIN_ID=tgrade-testnet-3
+CHAIN_ID_TGRADE=tgrade-testnet-3 >> $HOME/.bash_profile
 
-echo 'export CHAIN_ID='$CHAIN_ID >> $HOME/.bash_profile
-echo 'export TGRADE_NODENAME='${TGRADE_NODENAME} >> $HOME/.bash_profile
-echo 'export TGRADE_WALLET='${TGRADE_WALLET} >> $HOME/.bash_profile
-source $HOME/.bash_profile
+source ~/.bashrc
 
 #CloneTGRADE
 
