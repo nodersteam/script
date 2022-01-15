@@ -45,6 +45,8 @@ break
 "Actions outside server")
 USERNAME=$(whoami)
 SERVER_IP=$(wget -qO- eth0.me)
+source ~/.bashrc
+
                 echo "============================================================"
                 echo "Next, you will need to work in the terminal of your desktop computer. 
 Go to your terminal (if you are working under Windows - in the
