@@ -11,7 +11,7 @@ echo "============================================================"
 
 
 PS3='Select an action: '
-options=("Prepare the server for installation" "Install node" "Check node status" "Request for tokens and balance in Discord" "Create validator" "Parametrs"  "Exit")
+options=("Prepare the server for installation" "Install node" "Check node status" "Request for tokens and balance in Discord" "Create wallet" "Create validator" "Parametrs"  "Exit")
 select opt in "${options[@]}"
                do
                    case $opt in
@@ -49,6 +49,7 @@ CHAIN_ID=tgrade-testnet-3
                 
 read TGRADE_NODENAME
 TGRADE_NODENAME=$TGRADE_NODENAME$NODERS_NODE
+source $HOME/.bash_profile
 
 #CloneTGRADE
 
@@ -101,17 +102,24 @@ break
                echo "============================================================"
                
 curl -s localhost:26657/status | jq .result.sync_info.catching_up
+break
+;;
 
+"Create wallet")
+               echo "============================================================"
+               echo "Enter your wallet name:"
+               echo "============================================================"
+
+read TGRADE_WALLET
+tgrade keys $TGRADE_WALLET
 break
 ;;
 
 "Create validator")
                echo "============================================================"
-               echo "Enter your wallet name:"
+               echo "Enter your validator name:"
                echo "============================================================"
-               
-read TGRADE_WALLET
-               
+          
 tgrade tx poe create-validator \
   --amount 5000000utgd \
   --from $TGRADE_WALLET \
@@ -127,7 +135,6 @@ break
                echo "============================================================"
                echo "Your parameters"
                echo "============================================================"
-               
 echo $TGRADE_NODENAME $TGRADE_WALLET
 break
 ;;
