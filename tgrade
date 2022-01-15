@@ -46,11 +46,11 @@ CHAIN_ID=tgrade-testnet-3
                 echo "============================================================"
                 echo "Set parameters"
                 echo "============================================================"
-                echo "Enter NodName:"
+                echo "Enter Node name:"
                 echo "============================================================"
                 
 read TGRADE_NODENAME
-TGRADE_NODENAME=$TGRADE_NODENAME$NODERS_NODE
+TGRADE_NODENAME=$TGRADE_NODENAME$NODERS_NODE >> $HOME/.bash_profile
 
 #CloneTGRADE
 
