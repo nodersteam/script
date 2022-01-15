@@ -90,6 +90,8 @@ sudo tee <<EOF >/dev/null /etc/systemd/journald.conf
 Storage=persistent
 EOF
 
+source $HOME/.bash_profile
+
                echo "============================================================"
                echo "Installation complete!"
                echo "============================================================"
