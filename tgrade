@@ -100,7 +100,7 @@ break
 "Check node status")
 
                echo "============================================================"
-               echo "Synchronization status must be false!"
+               echo "Wait for the node to sync. Synchronization status must be false!"
                echo "============================================================"
                
 curl -s localhost:26657/status | jq .result.sync_info.catching_up
