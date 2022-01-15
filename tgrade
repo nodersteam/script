@@ -111,6 +111,7 @@ break
                echo "============================================================"
 
 read TGRADE_WALLET
+source $HOME/.bash_profile
 tgrade keys $TGRADE_WALLET
 break
 ;;
