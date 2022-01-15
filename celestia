@@ -29,8 +29,8 @@ wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
 sudo rm -rf /usr/local/go
 sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz"
 rm "go$ver.linux-amd64.tar.gz"
-echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile
-source $HOME/.bash_profile
+echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bashrc
+source $HOME/.bashrc
 
                echo "============================================================"
                echo "The server is ready!"
@@ -55,6 +55,7 @@ CELESTIA_NODENAME=$CELESTIA_NODENAME$NODERS_NODE
                 
 read CELESTIA_WALLET
 CELESTIA_WALLET=$CELESTIA_WALLET$NODERS_NODE
+source ~/.bashrc
 
 cd $HOME
 rm -r celestia-app
@@ -66,10 +67,10 @@ rm -r networks
 git clone https://github.com/celestiaorg/networks.git
 
 CELESTIA_CHAIN="devnet-2"
-echo 'export CELESTIA_CHAIN='$CELESTIA_CHAIN >> $HOME/.bash_profile
-echo 'export CELESTIA_NODENAME='${CELESTIA_NODENAME} >> $HOME/.bash_profile
-echo 'export CELESTIA_WALLET='${CELESTIA_WALLET} >> $HOME/.bash_profile
-source $HOME/.bash_profile
+echo 'export CELESTIA_CHAIN='$CELESTIA_CHAIN >> $HOME/.bashrc
+echo 'export CELESTIA_NODENAME='${CELESTIA_NODENAME} >> $HOME/.bashrc
+echo 'export CELESTIA_WALLET='${CELESTIA_WALLET} >> $HOME/.bashrc
+source $HOME/.bashrc
 celestia-appd init $CELESTIA_NODENAME --chain-id $CELESTIA_CHAIN
 cp $HOME/networks/devnet-2/genesis.json $HOME/.celestia-app/config/
 SEEDS="74c0c793db07edd9b9ec17b076cea1a02dca511f@46.101.28.34:26656"
@@ -111,12 +112,12 @@ celestia-appd keys add $CELESTIA_WALLET
 
 CELESTIA_ADDR=$(celestia-appd keys show $CELESTIA_WALLET -a)
 echo $CELESTIA_ADDR
-echo 'export CELESTIA_ADDR='${CELESTIA_ADDR} >> $HOME/.bash_profile
+echo 'export CELESTIA_ADDR='${CELESTIA_ADDR} >> $HOME/.bashrc
 
 CELESTIA_VALOPER=$(celestia-appd keys show $CELESTIA_WALLET --bech val -a)
 echo $CELESTIA_VALOPER
-echo 'export CELESTIA_VALOPER='${CELESTIA_VALOPER} >> $HOME/.bash_profile
-source $HOME/.bash_profile
+echo 'export CELESTIA_VALOPER='${CELESTIA_VALOPER} >> $HOME/.bashrc
+source ~/.bashrc
 
                echo "============================================================"
                echo "Installation complete!"
