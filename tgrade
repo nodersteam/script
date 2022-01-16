@@ -69,7 +69,7 @@ git checkout v0.5.1
 make build
 mv ~/tgrade/build/tgrade /usr/local/bin
 tgrade version
-tgrade init $TGRADE_NODENAME --chain-id $CHAIN_ID
+tgrade init $TGRADE_NODENAME --chain-id $CHAIN_ID_TGRADE
 wget https://raw.githubusercontent.com/confio/public-testnets/main/testnet-3/config/genesis.json -O ~/.tgrade/config/genesis.json
 sha256sum $HOME/.tgrade/config/genesis.json
 sed -i.bak -e "s/^minimum-gas-prices = \"\"/minimum-gas-prices = \"0.05utgd\"/" $HOME/.tgrade/config/app.toml
