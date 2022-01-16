@@ -137,7 +137,7 @@ tgrade tx poe create-validator \
   --amount 5000000utgd \
   --from $TGRADE_WALLET \
   --pubkey $(tgrade tendermint show-validator)  \
-  --chain-id $CHAIN_ID \
+  --chain-id $CHAIN_ID_TGRADE \
   --moniker "$TGRADE_NODENAME" \
   --fees 15000utgd \
   --node https://rpc.testnet-3.tgrade.io:443
