@@ -47,17 +47,19 @@ NODERS_NODE="[NODERS]"
                 echo "============================================================"
                 
 read CELESTIA_NODENAME
-CELESTIA_NODENAME=$CELESTIA_NODENAME$NODERS_NODE >> $HOME/.bashrc
+CELESTIA_NODENAME=$CELESTIA_NODENAME$NODERS_NODE
+echo 'export CELESTIA_NODENAME='${CELESTIA_NODENAME} >> $HOME/.bash_profile
 
                 echo "============================================================"
                 echo "Enter WalletName:"
                 echo "============================================================"
                 
 read CELESTIA_WALLET
-CELESTIA_WALLET=$CELESTIA_WALLET$NODERS_NODE >> $HOME/.bashrc
-CELESTIA_CHAIN="devnet-2" >> $HOME/.bashrc
-source $HOME/.bashrc
-
+CELESTIA_WALLET=$CELESTIA_WALLET$NODERS_NODE
+echo 'export CELESTIA_WALLET='${CELESTIA_WALLET} >> $HOME/.bash_profile
+CELESTIA_CHAIN="devnet-2"
+echo 'export CELESTIA_CHAIN='${CELESTIA_CHAIN} >> $HOME/.bash_profile
+. $HOME/.bash_profile
 
 cd $HOME
 rm -r celestia-app
@@ -109,12 +111,12 @@ celestia-appd keys add $CELESTIA_WALLET
 
 CELESTIA_ADDR=$(celestia-appd keys show $CELESTIA_WALLET -a)
 echo $CELESTIA_ADDR
-echo 'export CELESTIA_ADDR='${CELESTIA_ADDR} >> $HOME/.bashrc
+echo 'export CELESTIA_ADDR='${CELESTIA_ADDR} >> $HOME/.bash_profile
 
 CELESTIA_VALOPER=$(celestia-appd keys show $CELESTIA_WALLET --bech val -a)
 echo $CELESTIA_VALOPER
-echo 'export CELESTIA_VALOPER='${CELESTIA_VALOPER} >> $HOME/.bashrc
-source $HOME/.bashrc
+echo 'export CELESTIA_VALOPER='${CELESTIA_VALOPER} >> $HOME/.bash_profile
+. $HOME/.bash_profile
 
                echo "============================================================"
                echo "Installation complete!"
