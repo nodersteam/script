@@ -83,7 +83,9 @@ break
                 echo "============================================================"
                 echo "Write the full name of your wallet in the format name.testnet"
                 echo "============================================================"
-read FLUX_WALLET
+read FLUX_WALLET >> $HOME/.bashrc
+source $HOME/.bashrc
+
 near call v2.wnear.flux-dev storage_deposit '{"account_id": "$FLUX_WALLET"}' --accountId $FLUX_WALLET --amount 0.00125 --gas=300000000000000
 near call v2.wnear.flux-dev near_deposit "{}" --accountId $FLUX_WALLET --amount 20 --gas=300000000000000
 break
