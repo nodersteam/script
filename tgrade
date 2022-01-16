@@ -16,7 +16,16 @@ echo "============================================================"
 
     
 PS3='Select an action: '
-options=("Prepare the server for installation" "Install node" "Check node status" "Create wallet" "Request for tokens and balance in Discord"  "Create validator" "Parametrs"  "Exit")
+options=(
+"Prepare the server for installation"
+"Install node" "Check node status"
+"Create wallet"
+"Request for tokens and balance in Discord"
+"Create validator"
+"Increase voting power"
+"Parametrs"
+"Show active validator"
+"Exit")
 select opt in "${options[@]}"
                do
                    case $opt in
@@ -131,7 +140,27 @@ break
 #Create wallet
 
 tgrade keys add $TGRADE_WALLET
+               echo "============================================================"
+               echo "Copy and paste your wallet address: "
+               echo "============================================================"
+read TGRADE_WALLET_ADRESS
+echo 'export TGRADE_WALLET_ADRESS='${TGRADE_WALLET_ADRESS} >> $HOME/.bash_profile
+. $HOME/.bash_profile
 
+break
+;;
+
+"Increase voting power")
+               echo "============================================================"
+               echo "Power up on 3000000000utgd"
+               echo "============================================================"
+               
+tgrade tx poe self-delegate 3000000000utgd \
+  --from $TGRADE_WALLET \
+  --chain-id tgrade-testnet-3 \
+  --fees 15000utgd \
+  --node https://rpc.testnet-3.tgrade.io:443
+  
 break
 ;;
 
@@ -157,9 +186,10 @@ break
 
                echo "============================================================"
                echo "Your parameters"
+               echo "Node name: $TGRADE_NODENAME"
+               echo "Wallet name: $TGRADE_WALLET"
+               echo "Address your wallet: $TGRADE_WALLET_ADRESS"
                echo "============================================================"
-               
-echo $TGRADE_NODENAME $TGRADE_WALLET
 break
 ;;
 
@@ -173,6 +203,13 @@ Server in Discord - https://discord.gg/9mxWTGZB"
                echo "Format request tokens you will see in the channel"
                echo "Format request balanceyou will see in the channel"
                echo "============================================================"
+
+break
+;;
+
+"Show active validator")
+
+curl https://lcd.testnet-3.tgrade.io:443/wasm/v1/contract/tgrade1pvrwmjuusn9wh34j7y520g8gumuy9xtl2ne37x/smart/$(echo '{"list_active_validators":{}}' |base64) | jq
 
 break
 ;;
