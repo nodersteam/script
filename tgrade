@@ -5,14 +5,17 @@ do
 
 # Logo
 
-bash_profile=$HOME/.bash_profile
-if [ -f "$bash_profile" ]; then
-    . $HOME/.bash_profile
+
 
 echo "============================================================"
 curl -s https://raw.githubusercontent.com/AlekseyMoskalev1/script/main/Noders.sh | bash
 echo "============================================================"
 
+fi
+bash_profile=$HOME/.bash_profile
+if [ -f "$bash_profile" ]; then
+    . $HOME/.bash_profile
+    
 PS3='Select an action: '
 options=("Prepare the server for installation" "Install node" "Check node status" "Create wallet" "Request for tokens and balance in Discord"  "Create validator" "Parametrs"  "Exit")
 select opt in "${options[@]}"
