@@ -5,7 +5,7 @@ do
 
 # Logo
 
-bashrc=$HOME/.bashrc
+bash_profile=$HOME/.bash_profile
 
 echo "============================================================"
 curl -s https://raw.githubusercontent.com/AlekseyMoskalev1/script/main/Noders.sh | bash
@@ -50,18 +50,17 @@ NODERS_NODE="[NODERS]"
                 echo "============================================================"
 
 read TGRADE_NODENAME
-TGRADE_NODENAME=$TGRADE_NODENAME$NODERS_NODE >> $HOME/.bashrc
+TGRADE_NODENAME=$TGRADE_NODENAME$NODERS_NODE >> ~/.bash_profile
+source ~/.bash_profile
 
                 echo "============================================================"
                 echo "Enter Wallet name:"
                 echo "============================================================"
 
 read TGRADE_WALLET              
-TGRADE_WALLET=$TGRADE_WALLET$NODERS_NODE >> $HOME/.bashrc
-
-CHAIN_ID_TGRADE=tgrade-testnet-3 >> $HOME/.bashrc
-
-source $HOME/.bashrc
+TGRADE_WALLET=$TGRADE_WALLET$NODERS_NODE >> ~/.bash_profile
+CHAIN_ID_TGRADE=tgrade-testnet-3 >> ~/.bash_profile
+source ~/.bash_profile
 
 #CloneTGRADE
 
