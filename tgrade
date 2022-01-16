@@ -113,7 +113,12 @@ sudo mv $HOME/tgrade.service /etc/systemd/system
 sudo tee <<EOF >/dev/null /etc/systemd/journald.conf
 Storage=persistent
 EOF
-systemctl restart tgrade
+
+sudo systemctl restart systemd-journald
+sudo systemctl daemon-reload
+sudo systemctl enable tgrade
+sudo systemctl restart tgrade
+
 source $HOME/.bash_profile
 
                echo "============================================================"
