@@ -191,7 +191,10 @@ break
                echo "============================================================"
 
 read NODENAME_STRATOS
-NODENAME_STRATOS=$NODENAME_STRATOS$NODERS_NODE >> $HOME/.bashrc
+NODENAME_STRATOS=$NODENAME_STRATOS$NODERS_NODE
+echo 'export NODENAME_STRATOS='${NODENAME_STRATOS} >> $HOME/.bash_profile
+. $HOME/.bash_profile
+
 source $HOME/.bashrc
 install
 service
@@ -215,8 +218,9 @@ addres
                 echo "Copy and paste your wallet address: "
                 echo "============================================================"
 		
-read WALLET_ADDRESS_STRATOS >> $HOME/.bashrc
-source $HOME/.bashrc
+read WALLET_ADDRESS_STRATOS >> $HOME/.bash_profile
+echo 'export WALLET_ADDRESS_STRATOS='${WALLET_ADDRESS_STRATOS} >> $HOME/.bash_profile
+. $HOME/.bash_profile
 
 fauccet
 break
