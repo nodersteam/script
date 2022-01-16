@@ -18,8 +18,8 @@ wget https://golang.org/dl/go1.16.7.linux-amd64.tar.gz; \
 rm -rv /usr/local/go; \
 tar -C /usr/local -xzf go1.16.7.linux-amd64.tar.gz && \
 rm -v go1.16.7.linux-amd64.tar.gz && \
-echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> ~/.bash_profile && \
-source ~/.bash_profile && \
+echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bashrc && \
+source $HOME/.bashrc && \
 go version
                 }
 
@@ -32,13 +32,13 @@ wget https://github.com/stratosnet/stratos-chain/releases/download/v0.5.0/stchai
 chmod +x stchaincli stchaind && \
 ln -s $HOME/stratos/stchaincli /usr/bin/ && \
 ln -s $HOME/stratos/stchaind /usr/bin/
-echo "export NODENAME="$NODENAME"" >> ~/.bash_profile 
-source ~/.bash_profile 
-stchaind init $NODENAME 
+echo "export NODENAME_STRATOS="$NODENAME_STRATOS"" >> $HOME/.bashrc
+source $HOME/.bashrc
+stchaind init $NODENAME_STRATOS
 rm -vf $HOME/.stchaind/config/genesis* $HOME/.stchaind/config/config.toml && \
 wget -P $HOME/.stchaind/config/ https://raw.githubusercontent.com/stratosnet/stratos-chain-testnet/main/genesis.json && \
 wget -P $HOME/.stchaind/config/ https://raw.githubusercontent.com/stratosnet/stratos-chain-testnet/main/config.toml
-sed -i "s/mynode/"$NODENAME"/g" $HOME/.stchaind/config/config.toml
+sed -i "s/mynode/"$NODENAME_STRATOS"/g" $HOME/.stchaind/config/config.toml
 }
 
 function delete {
@@ -86,7 +86,7 @@ sudo systemctl enable stratosd && sudo systemctl restart stratosd
 function wallet {
 stchaincli keys add \
 --hd-path "m/44'/606'/0'/0/0" \
---keyring-backend=test $NODENAME
+--keyring-backend=test $NODENAME_STRATOS
                 echo "============================================================"
                 echo "Write your mnemonic phrase in safe place"
                 echo "============================================================"
@@ -96,7 +96,7 @@ sleep 10
  function recoverWallet {
 stchaincli keys add \
 --hd-path "m/44'/606'/0'/0/0" \
---keyring-backend=test $NODENAME
+--keyring-backend=test $NODENAME_STRATOS
 --recover
                 }
 		
@@ -110,14 +110,14 @@ stchaincli keys list \
 #Fauccet and Validator
                
 function fauccet {
-curl -X POST https://faucet-test.thestratos.org/faucet/$WALLET_ADDRESS
+curl -X POST https://faucet-test.thestratos.org/faucet/$WALLET_ADDRESS_STRATOS
                }
                
 function createValidator {
 stchaincli tx staking create-validator \
 --amount="1000000000ustos" \
 --pubkey=$(stchaind tendermint show-validator) \
---moniker=$NODENAME \
+--moniker=$NODENAME_STRATOS \
 --chain-id=stratos-testnet-3 \
 --commission-max-change-rate="0.1" \
 --commission-max-rate="0.5" \
@@ -129,13 +129,13 @@ stchaincli tx staking create-validator \
 --keyring-backend=test \
 --node `cat "$HOME/.stchaind/config/config.toml" \
 | grep -oPm1 "(?<=^laddr = \")([^%]+)(?=\")"` \
---from=$NODENAME
+--from=$NODENAME_STRATOS
                }
 	       
 #Info
 	       
 function info {
-stchaincli query staking validator $(stchaincli keys show $NODENAME \
+stchaincli query staking validator $(stchaincli keys show $NODENAME_STRATOS \
 --bech val --address --keyring-backend test) \
 --trust-node \
 --node `cat "$HOME/.stchaind/config/config.toml" \
@@ -162,7 +162,7 @@ function balance {
                 echo "============================================================"
                 echo "The balance will be displayed after the node is fully synchronized"
                 echo "============================================================"
-stchaincli query account $WALLET_ADDRESS
+stchaincli query account $WALLET_ADDRESS_STRATOS
 }
 
                PS3='Select an action: '
@@ -189,8 +189,10 @@ break
 	       echo "============================================================"
                echo "Enter your node name: "
                echo "============================================================"
-read NODENAME
-NODENAME=$NODENAME$NODERS_NODE
+
+read NODENAME_STRATOS
+NODENAME_STRATOS=$NODENAME_STRATOS$NODERS_NODE >> $HOME/.bashrc
+source $HOME/.bashrc
 install
 service
 start
@@ -212,7 +214,10 @@ addres
                 echo "============================================================"
                 echo "Copy and paste your wallet address: "
                 echo "============================================================"
-read WALLET_ADDRESS
+		
+read WALLET_ADDRESS_STRATOS >> $HOME/.bashrc
+source $HOME/.bashrc
+
 fauccet
 break
 ;;
