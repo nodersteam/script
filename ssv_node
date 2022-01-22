@@ -1,0 +1,129 @@
+#!/bin/bash
+
+while true
+do
+
+# Logo
+
+echo "============================================================"
+curl -s https://raw.githubusercontent.com/AlekseyMoskalev1/script/main/Noders.sh | bash
+echo "============================================================"
+
+
+PS3='Select an action: '
+options=("Prepare the server for installation" "Install node" "Check node status" "Request for tokens in Discord" "Balance" "Create validator" "Check validator" "Parametrs"  "Exit")
+select opt in "${options[@]}"
+               do
+                   case $opt in
+                   
+"Prepare the server for installation")
+               echo "============================================================"
+               echo "Preparation has begun"
+               echo "============================================================"
+
+#Зависимости
+
+cd $HOME             
+wget https://raw.githubusercontent.com/bloxapp/ssv/main/install.sh
+chmod +x install.sh
+./install.s
+
+               echo "============================================================"
+               echo "The server is ready!"
+               echo "============================================================"
+break
+;;
+
+"Key generation")
+
+               echo "============================================================"
+               echo "Be sure to save the public and private keys in text format"
+               echo "First public, second private"
+               echo "============================================================"
+
+#Генерация ключей
+
+docker run -d --name=ssv_node_op_key -it 'bloxstaking/ssv-node:latest' \
+/go/bin/ssvnode generate-operator-keys && docker logs ssv_node_op_key --follow \
+&& docker stop ssv_node_op_key && docker rm ssv_node_op_key
+
+break
+;;
+
+"Registration Infura")
+
+#Рега в инфура
+
+                echo "============================================================"
+                echo "Registration Infura"
+                echo "You can find information about this in the text guide."
+                echo "============================================================"
+                
+break
+;;
+
+"Creating a configuration file")
+
+
+               echo "============================================================"
+               echo "Insert your Beacon endpoint.
+To do this, go to ETH 2 and switch the endpoint to Prater
+Copy https link"
+               echo "============================================================"
+read BEACON_ETH2_ENDPOINT
+echo 'export BEACON_ETH2_ENDPOINT='${BEACON_ETH2_ENDPOINT} >> $HOME/.bash_profile
+
+               echo "============================================================"
+               echo "Insert your ETH1 node WebSocket address in Görli"
+               echo "============================================================"
+read WSS_GOERLI_ETH_ENDPOINT
+echo 'export WSS_GOERLI_ETH_ENDPOINT='${WSS_GOERLI_ETH_ENDPOINT} >> $HOME/.bash_profile
+
+               echo "============================================================"
+               echo "Insert your the private key we saved earlier"
+               echo "============================================================"
+read PRIVATE_KEY
+echo 'export PRIVATE_KEY='${PRIVATE_KEY} >> $HOME/.bash_profile
+. $HOME/.bash_profile
+
+export ETH_2 node=$HOME/.ssv
+mkdir -p $ETH_2
+
+yq n db.Path "$ETH_2" | tee $ETH_2/config.yaml \
+&& yq w -i $SSV_DB/config.yaml eth2.Network "prater" \
+&& yq w -i $SSV_DB/config.yaml eth2.BeaconNodeAddr "$BEACON_ETH2_ENDPOINT" \
+&& yq w -i $SSV_DB/config.yaml eth1.ETH1Addr "$WSS_GOERLI_ETH_ENDPOINT" \
+&& yq w -i $SSV_DB/config.yaml eth1.RegistryContractAddr "0x687fb596F3892904F879118e2113e1EEe8746C2E" \
+&& yq w -i $SSV_DB/config.yaml MetricsAPIPort "15000" \
+&& yq w -i $SSV_DB/config.yaml OperatorPrivateKey "$PRIVATE_KEY"
+
+               echo "============================================================"
+               echo "Configuration file created"
+               echo "============================================================"
+
+break
+;;
+
+"Run operator")
+
+docker run -d --restart unless-stopped --name=ssv_node -e \
+CONFIG_PATH=./config.yaml -p 13000:13000 -p 12000:12000 -v \
+$SSV_DB/config.yaml:/config.yaml -v $SSV_DB:/data -it \
+'bloxstaking/ssv-node:latest' make BUILD_PATH=/go/bin/ssvnode start-node
+
+               echo "============================================================"
+               echo "Configuration file created"
+               echo "============================================================"
+
+break
+;;
+
+
+"Exit")
+exit
+;;
+
+*) echo "invalid option $REPLY";;
+esac
+done
+done
