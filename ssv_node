@@ -93,12 +93,12 @@ export ETH_2=$HOME/.ssv
 mkdir -p $ETH_2
 
 yq n db.Path "$ETH_2" | tee $ETH_2/config.yaml \
-&& yq w -i $SSV_DB/config.yaml eth2.Network "prater" \
-&& yq w -i $SSV_DB/config.yaml eth2.BeaconNodeAddr "$BEACON_ETH2_ENDPOINT" \
-&& yq w -i $SSV_DB/config.yaml eth1.ETH1Addr "$WSS_GOERLI_ETH_ENDPOINT" \
-&& yq w -i $SSV_DB/config.yaml eth1.RegistryContractAddr "0x687fb596F3892904F879118e2113e1EEe8746C2E" \
-&& yq w -i $SSV_DB/config.yaml MetricsAPIPort "15000" \
-&& yq w -i $SSV_DB/config.yaml OperatorPrivateKey "$PRIVATE_KEY"
+&& yq w -i $ETH_2/config.yaml eth2.Network "prater" \
+&& yq w -i $ETH_2/config.yaml eth2.BeaconNodeAddr "$BEACON_ETH2_ENDPOINT" \
+&& yq w -i $ETH_2/config.yaml eth1.ETH1Addr "$WSS_GOERLI_ETH_ENDPOINT" \
+&& yq w -i $ETH_2/config.yaml eth1.RegistryContractAddr "0x687fb596F3892904F879118e2113e1EEe8746C2E" \
+&& yq w -i $ETH_2/config.yaml MetricsAPIPort "15000" \
+&& yq w -i $ETH_2/config.yaml OperatorPrivateKey "$PRIVATE_KEY"
 
                echo "============================================================"
                echo "Configuration file created"
