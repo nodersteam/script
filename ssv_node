@@ -23,11 +23,10 @@ select opt in "${options[@]}"
 
 #Зависимости
 
-cd $HOME             
-wget https://raw.githubusercontent.com/bloxapp/ssv/main/install.sh
-chmod +x install.sh
-./install.s
-
+cd $HOME
+wget -q -O $HOME/install.sh https://raw.githubusercontent.com/bloxapp/ssv/main/install.sh
+chmod +x $HOME/install.sh
+./install.sh
                echo "============================================================"
                echo "The server is ready!"
                echo "============================================================"
