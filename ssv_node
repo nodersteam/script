@@ -25,8 +25,12 @@ select opt in "${options[@]}"
 
 cd $HOME
 wget -q -O $HOME/install.sh https://raw.githubusercontent.com/bloxapp/ssv/main/install.sh
+sleep 2
 chmod +x $HOME/install.sh
+sleep 2
+
 ./install.sh
+
                echo "============================================================"
                echo "The server is ready!"
                echo "============================================================"
