@@ -89,7 +89,7 @@ read PRIVATE_KEY
 echo 'export PRIVATE_KEY='${PRIVATE_KEY} >> $HOME/.bash_profile
 . $HOME/.bash_profile
 
-export ETH_2 node=$HOME/.ssv
+export ETH_2=$HOME/.ssv
 mkdir -p $ETH_2
 
 yq n db.Path "$ETH_2" | tee $ETH_2/config.yaml \
