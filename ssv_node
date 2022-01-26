@@ -11,7 +11,7 @@ echo "============================================================"
 
 
 PS3='Select an action: '
-options=("Prepare the server for installation" "Key generation" "Registration Infura" "Creating a configuration file" "Run operator" "Exit")
+options=("Prepare the server for installation" "Key generation" "Registration Infura" "Creating a configuration file" "Run operator" "Check log" "Exit")
 select opt in "${options[@]}"
                do
                    case $opt in
@@ -121,7 +121,12 @@ $ETH_2/config.yaml:/config.yaml -v $ETH_2:/data -it \
 break
 ;;
 
+"Check log")
 
+docker logs ssv_node --follow --tail=100
+
+break
+;;
 "Exit")
 exit
 ;;
