@@ -11,7 +11,16 @@ echo "============================================================"
 
 
 PS3='Select an action: '
-options=("Prepare the server for installation" "Key generation" "Registration Infura" "Creating a configuration file" "Run operator" "Check log" "Exit")
+options=(
+"Prepare the server for installation"
+"Key generation"
+"Registration Infura"
+"Creating a configuration file"
+"Run operator"
+"Check log"
+"Generate key for validator"
+"Exit")
+
 select opt in "${options[@]}"
                do
                    case $opt in
@@ -107,6 +116,13 @@ yq n db.Path "$ETH_2" | tee $ETH_2/config.yaml \
 break
 ;;
 
+"Generate key for validator")
+
+cd $HOME
+wget -q -O $HOME/eth2deposit-cli-256ea21-linux-amd64.tar.gz https://github.com/ethereum/eth2.0-deposit-cli/releases/download/v1.2.0/eth2deposit-cli-256ea21-linux-amd64.tar.gz
+tar -xzf $HOME/eth2deposit-cli-256ea21-linux-amd64.tar.gz
+$HOME/eth2deposit-cli-256ea21-linux-amd64/deposit new-mnemonic --num_validators 1 --chain prater
+
 "Run operator")
 
 docker run -d --restart unless-stopped --name=ssv_node -e \
@@ -114,8 +130,16 @@ CONFIG_PATH=./config.yaml -p 13000:13000 -p 12000:12000 -v \
 $ETH_2/config.yaml:/config.yaml -v $ETH_2:/data -it \
 'bloxstaking/ssv-node:latest' make BUILD_PATH=/go/bin/ssvnode start-node
 
+export SSV_DB=$HOME/.ssv
+docker rm -f ssv_node
+docker pull bloxstaking/ssv-node:latest
+docker run -d --restart unless-stopped --name=ssv_node -e \
+CONFIG_PATH=./config.yaml -p 13000:13000 -p 12000:12000 -v \
+$SSV_DB/config.yaml:/config.yaml -v $SSV_DB:/data -it \
+'bloxstaking/ssv-node:latest' make BUILD_PATH=/go/bin/ssvnode start-node
+
                echo "============================================================"
-               echo "Configuration file created"
+               echo "Operator is runing"
                echo "============================================================"
 
 break
