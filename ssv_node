@@ -123,6 +123,10 @@ wget -q -O $HOME/eth2deposit-cli-256ea21-linux-amd64.tar.gz https://github.com/e
 tar -xzf $HOME/eth2deposit-cli-256ea21-linux-amd64.tar.gz
 $HOME/eth2deposit-cli-256ea21-linux-amd64/deposit new-mnemonic --num_validators 1 --chain prater
 
+break
+;;
+
+
 "Run operator")
 
 docker run -d --restart unless-stopped --name=ssv_node -e \
