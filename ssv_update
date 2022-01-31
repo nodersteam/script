@@ -1,0 +1,55 @@
+#!/bin/bash
+
+while true
+do
+
+# Logo
+
+echo "============================================================"
+curl -s https://raw.githubusercontent.com/AlekseyMoskalev1/script/main/Noders.sh | bash
+echo "============================================================"
+
+
+PS3='Select an action: '
+options=(
+"Update SSV"
+"Check log"
+"Exit")
+
+select opt in "${options[@]}"
+               do
+                   case $opt in
+                   
+"Update SSV")
+               echo "============================================================"
+               echo "Preparation has begun"
+               echo "============================================================"
+
+docker stop ssv_node
+
+export SSV_DB=$HOME/.ssv
+
+docker rm -f ssv_node && docker pull bloxstaking/ssv-node:latest
+
+docker run -d --restart unless-stopped --name=ssv_node -e \
+CONFIG_PATH=./config.yaml -p 13000:13000 -p 12000:12000/udp -v \
+$SSV_DB/config.yaml:/config.yaml -v $SSV_DB:/data -it \
+'bloxstaking/ssv-node:latest' make BUILD_PATH=/go/bin/ssvnode start-node \
+
+break
+;;
+
+"Check log")
+
+docker logs ssv_node --follow --tail=100
+
+break
+;;
+"Exit")
+exit
+;;
+
+*) echo "invalid option $REPLY";;
+esac
+done
+done
