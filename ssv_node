@@ -134,13 +134,6 @@ CONFIG_PATH=./config.yaml -p 13000:13000 -p 12000:12000 -v \
 $ETH_2/config.yaml:/config.yaml -v $ETH_2:/data -it \
 'bloxstaking/ssv-node:latest' make BUILD_PATH=/go/bin/ssvnode start-node
 
-export SSV_DB=$HOME/.ssv
-docker rm -f ssv_node
-docker pull bloxstaking/ssv-node:latest
-docker run -d --restart unless-stopped --name=ssv_node -e \
-CONFIG_PATH=./config.yaml -p 13000:13000 -p 12000:12000 -v \
-$SSV_DB/config.yaml:/config.yaml -v $SSV_DB:/data -it \
-'bloxstaking/ssv-node:latest' make BUILD_PATH=/go/bin/ssvnode start-node
 
                echo "============================================================"
                echo "Operator is runing"
