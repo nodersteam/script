@@ -105,8 +105,8 @@ dewebd keys add $DSW_WALLET
                 echo "Past your wallet address"
                 echo "============================================================"
 
-read DSW_WALLTE_ADR             
-echo 'export DSW_WALLTE_ADR='${DSW_WALLTE_ADR} >> $HOME/.bash_profile
+read DSW_WALLET_ADR             
+echo 'export DSW_WALLTE_ADR='${DSW_WALLET_ADR} >> $HOME/.bash_profile
 
 break
 ;;
@@ -120,11 +120,8 @@ break
 
 "Check the synchronisation")
                 echo "============================================================"
-                echo "Your address"
+                echo "Your address $DSW_WALLET_ADR"
                 echo "============================================================"
-
-echo $DSW_WALLTE_ADR
-
 
                 echo "============================================================"
                 echo "Full sync should be false"
