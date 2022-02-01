@@ -16,6 +16,7 @@ options=(
 "Run a fullnode"
 "Create a wallet"
 "Check the synchronisation"
+"Create validator"
 "Check log"
 "Exit")
 
@@ -118,6 +119,25 @@ sudo journalctl -u dewebd -f
 curl -s localhost:26657/status  | jq .result.sync_info.catching_up
 
 ;;
+
+"Create validator")
+
+dewebd tx staking create-validator \
+    --amount 1000000udws \
+    --commission-max-change-rate 0.10 \
+    --commission-max-rate 0.2 \
+    --commission-rate 0.1 \
+    --from $DSW_WALLET \
+    --min-self-delegation 1 \
+    --moniker $DSW_NODE \
+    --pubkey $(dewebd tendermint show-validator) \
+    --chain-id deweb-testnet-0 \
+    --gas auto \
+    --gas-adjustment 1.5 \
+    --gas-prices 0.001udws
+    
+;;
+
 
 "Exit")
 exit
