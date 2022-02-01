@@ -106,7 +106,7 @@ dewebd keys add $DSW_WALLET
                 echo "============================================================"
 
 read DSW_WALLET_ADR             
-echo 'export DSW_WALLTE_ADR='${DSW_WALLET_ADR} >> $HOME/.bash_profile
+echo 'export DSW_WALLET_ADR='${DSW_WALLET_ADR} >> $HOME/.bash_profile
 
 break
 ;;
