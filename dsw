@@ -118,6 +118,18 @@ sudo journalctl -u dewebd -f
 
 curl -s localhost:26657/status  | jq .result.sync_info.catching_up
 
+                echo "============================================================"
+                echo "Your height"
+                echo "============================================================"
+
+curl -s localhost:26657/status | jq .result.sync_info.latest_block_height
+
+                echo "============================================================"
+                echo "Desired height"
+                echo "============================================================"
+
+curl -s "https://rpc-deweb.deweb.services/status?"  | jq .result.sync_info.latest_block_height
+
 ;;
 
 "Create validator")
