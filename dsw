@@ -101,13 +101,14 @@ dewebd keys add $DSW_WALLET
                 echo "Please, save your mnemonic!"
                 echo "============================================================"
 
-exit
+break
 ;;
 
 "Check log")
 
 sudo journalctl -u dewebd -f 
 
+break
 ;;
 
 "Check the synchronisation")
@@ -130,6 +131,7 @@ curl -s localhost:26657/status | jq .result.sync_info.latest_block_height
 
 curl -s "https://rpc-deweb.deweb.services/status?"  | jq .result.sync_info.latest_block_height
 
+break
 ;;
 
 "Create validator")
@@ -148,6 +150,7 @@ dewebd tx staking create-validator \
     --gas-adjustment 1.5 \
     --gas-prices 0.001udws
     
+break
 ;;
 
 
