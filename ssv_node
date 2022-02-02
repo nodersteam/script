@@ -19,6 +19,7 @@ options=(
 "Run operator"
 "Check log"
 "Generate key for validator"
+"Check valid list"
 "Exit")
 
 select opt in "${options[@]}"
@@ -148,6 +149,14 @@ docker logs ssv_node --follow --tail=100
 
 break
 ;;
+
+"Check valid list")
+
+dewebd query staking validators --output json| jq
+
+break
+;;
+
 "Exit")
 exit
 ;;
