@@ -45,7 +45,6 @@ break
             
 "Install full node")
 
-
 cd $HOME
 rm -rf celestia-node
 git clone https://github.com/celestiaorg/celestia-node.git
@@ -130,7 +129,7 @@ break
 
 journalctl -u celestia-light -f -o cat
 
-breal
+break
 ;;
 
 "Exit")
