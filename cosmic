@@ -163,7 +163,7 @@ break
                echo "============================================================"
           
 cohod tx staking create-validator \
-  --amount=900000000000ucoho \
+  --amount=100ucoho \
   --pubkey=$(cohod tendermint show-validator) \
   --moniker=$COSMIC_NODENAME \
   --chain-id=$CHAIN_ID_COSMIC \
