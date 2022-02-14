@@ -132,8 +132,7 @@ break
                echo "============================================================"
                echo "Wait for the node to sync. Synchronization status must be false!"
                echo "============================================================"
-               
-curl -s localhost:26657/status | jq .result.sync_info.catching_up               
+                         
 journalctl -u cohod -f
 break
 ;;
@@ -184,6 +183,7 @@ break
                echo "Node name: $COSMIC_NODENAME"
                echo "Wallet name: $COSMIC_WALLET"
                echo "Address your wallet: $COSMIC_WALLET_ADDRESS"
+               curl -s localhost:26657/status | jq .result.sync_info.catching_up     
                echo "============================================================"
 break
 ;;
