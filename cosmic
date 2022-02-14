@@ -138,6 +138,8 @@ break
 ;;
 
 "Create wallet")
+. $HOME/.bash_profile
+
                echo "============================================================"
                echo "Your wallet name $COSMIC_WALLET"
                echo "============================================================"
@@ -150,7 +152,6 @@ cohod keys add $COSMIC_WALLET
                echo "============================================================"
 read COSMIC_WALLET_ADDRESS
 echo 'export COSMIC_WALLET_ADDRESS='${COSMIC_WALLET_ADDRESS} >> $HOME/.bash_profile
-. $HOME/.bash_profile
 
 break
 ;;
