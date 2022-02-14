@@ -113,6 +113,10 @@ LimitNOFILE=10000
 WantedBy=multi-user.target
 EOF
 
+search=0stake
+replace=0ucoho
+sed -i "s/$search/$replace/" $HOME/.coho/config/app.toml
+
 sudo systemctl enable cohod
 sudo systemctl daemon-reload
 sudo systemctl restart cohod
@@ -129,6 +133,7 @@ break
                echo "Wait for the node to sync. Synchronization status must be false!"
                echo "============================================================"
                
+curl -s localhost:26657/status | jq .result.sync_info.catching_up               
 journalctl -u cohod -f
 break
 ;;
