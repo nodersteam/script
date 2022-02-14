@@ -185,7 +185,7 @@ break
                echo "Node name: $COSMIC_NODENAME"
                echo "Wallet name: $COSMIC_WALLET"
                echo "Address your wallet: $COSMIC_WALLET_ADDRESS"
-               curl -s localhost:26657/status | jq .result.sync_info
+               curl -s localhost:26657/status | jq .result.sync_info.catching_up
                cohod status | jq .SyncInfo.latest_block_height
                echo "============================================================"
 break
