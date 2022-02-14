@@ -177,6 +177,7 @@ break
 ;;
 
 "Parametrs")
+. $HOME/.bash_profile
 
                echo "============================================================"
                echo "Your parameters"
