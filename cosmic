@@ -159,7 +159,7 @@ break
 "Create validator")
 
                echo "============================================================"
-               echo "Name your validator $TGRADE_NODENAME "
+               echo "Name your validator $COSMIC_NODENAME"
                echo "============================================================"
           
 cohod tx staking create-validator \
