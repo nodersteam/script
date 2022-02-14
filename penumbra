@@ -1,0 +1,115 @@
+#!/bin/bash
+
+bash_profile=$HOME/.bash_profile
+
+while true
+do
+
+# Logo
+
+echo "============================================================"
+curl -s https://raw.githubusercontent.com/AlekseyMoskalev1/script/main/Noders.sh | bash
+echo "============================================================"
+
+
+    
+PS3='Select an action: '
+options=(
+"Prepare the server for installation"
+"Build"
+"Create wallet"
+"Fauccet"
+"Wallet list"
+"Sync status"
+"Check balance"
+"Exit")
+
+select opt in "${options[@]}"
+               do
+                   case $opt in
+                   
+"Prepare the server for installation")
+               echo "============================================================"
+               echo "Preparation has begun"
+               echo "============================================================"
+
+#APT
+sudo apt update && sudo apt upgrade
+sudo apt install make clang pkg-config libssl-dev build-essential -y
+
+
+#RUST
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -1
+source $HOME/.cargo/env
+
+
+               echo "============================================================"
+               echo "The server is ready!"
+               echo "============================================================"
+break
+;;
+            
+"Build")
+
+git clone https://github.com/penumbra-zone/penumbra
+cd penumbra && git checkout 005-mneme
+cargo build --release --bin pcli
+
+               echo "============================================================"
+               echo "Installation complete!"
+               echo "============================================================"
+break
+;;
+
+"Create wallet")
+
+cargo run --quiet --release --bin pcli wallet generate
+
+break
+;;
+
+"Fauccet")
+
+               echo "============================================================"
+               echo "In order to get tokens - you must transfer to discord and request them"
+               echo "https://discord.gg/G6ZmyEFB"
+               echo "============================================================"
+               
+break
+;;
+
+
+"Wallet list")
+
+cd $HOME/penumbra
+cargo run --quiet --release --bin pcli addr list
+cd
+
+break
+;;
+
+"Sync status")
+cd $HOME/penumbra
+cargo run --quiet --release --bin pcli sync
+cd
+
+break
+;;
+
+"Check balance")
+
+cd $HOME/penumbra
+cargo run --quiet --release --bin pcli balance
+cd
+
+break
+;;
+
+"Exit")
+exit
+;;
+
+*) echo "invalid option $REPLY";;
+esac
+done
+done
