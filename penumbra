@@ -22,6 +22,8 @@ options=(
 "Wallet list"
 "Sync status"
 "Check balance"
+"Delegate"
+"Undelegate"
 "Exit")
 
 select opt in "${options[@]}"
@@ -39,7 +41,7 @@ sudo apt install make clang pkg-config libssl-dev build-essential -y
 
 
 #RUST
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -1
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 source $HOME/.cargo/env
 
 
@@ -54,6 +56,7 @@ break
 git clone https://github.com/penumbra-zone/penumbra
 cd penumbra && git checkout 005-mneme
 cargo build --release --bin pcli
+export RUST_LOG=info
 
                echo "============================================================"
                echo "Installation complete!"
@@ -100,6 +103,24 @@ break
 
 cd $HOME/penumbra
 cargo run --quiet --release --bin pcli balance
+cd
+
+break
+;;
+
+"Delegate")
+
+cd $HOME/penumbra
+cargo run --quiet --release --bin pcli stake delegate 10penumbra --to penumbravalid1hz7u6jr9gcg54xycd7yry77sqah36xmauw4z2zpckjhfgs2h7s9s8x0pek
+cd
+
+break
+;;
+
+"Undelegate")
+
+cd $HOME/penumbra
+cargo run --quiet --release --bin pcli stake undelegate 1delegation_penumbravalid1hz7u6jr9gcg54xycd7yry77sqah36xmauw4z2zpckjhfgs2h7s9s8x0pek
 cd
 
 break
