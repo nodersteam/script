@@ -21,6 +21,8 @@ options=(
 "Fauccet"
 "Wallet list"
 "Sync status"
+"Undelegate"
+"Delegate"
 "Check balance"
 "Exit")
 
@@ -107,6 +109,24 @@ break
 
 cd $HOME/penumbra
 cargo run --quiet --release --bin pcli balance
+cd
+
+break
+;;
+
+"Delegate")
+
+cd $HOME/penumbra
+cargo run --quiet --release --bin pcli stake delegate 10penumbra --to penumbravalid1hz7u6jr9gcg54xycd7yry77sqah36xmauw4z2zpckjhfgs2h7s9s8x0pek
+cd
+
+break
+;;
+
+"Undelegate")
+
+cd $HOME/penumbra
+cargo run --quiet --release --bin pcli stake undelegate 1delegation_penumbravalid1hz7u6jr9gcg54xycd7yry77sqah36xmauw4z2zpckjhfgs2h7s9s8x0pek
 cd
 
 break
