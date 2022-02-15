@@ -38,7 +38,7 @@ select opt in "${options[@]}"
 #APT
 sudo apt update && sudo apt upgrade
 sudo apt install make clang pkg-config libssl-dev build-essential -y
-
+sudo apt-get install git
 
 #RUST
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
