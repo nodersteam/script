@@ -65,7 +65,6 @@ NODERS_NODE="[NODERS]"
                 echo "============================================================"
 
 read COSMIC_NODENAME
-COSMIC_NODENAME=$COSMIC_NODENAME$NODERS_NODE
 echo 'export COSMIC_NODENAME='${COSMIC_NODENAME} >> $HOME/.bash_profile
 
                 echo "============================================================"
@@ -73,7 +72,6 @@ echo 'export COSMIC_NODENAME='${COSMIC_NODENAME} >> $HOME/.bash_profile
                 echo "============================================================"
 
 read COSMIC_WALLET              
-COSMIC_WALLET=$COSMIC_WALLET$NODERS_NODE
 echo 'export COSMIC_WALLET='${COSMIC_WALLET} >> $HOME/.bash_profile
 
 CHAIN_ID_COSMIC=darkmatter-1
