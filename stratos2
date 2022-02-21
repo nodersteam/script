@@ -13,32 +13,35 @@ NODERS_NODE="[NODERS]"
 
 function preparing {
 sudo apt-get update && sudo apt-get upgrade -y
-sudo apt-get install tar curl ufw jq -y
-wget https://golang.org/dl/go1.16.7.linux-amd64.tar.gz; \
-rm -rv /usr/local/go; \
-tar -C /usr/local -xzf go1.16.7.linux-amd64.tar.gz && \
-rm -v go1.16.7.linux-amd64.tar.gz && \
-echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bashrc && \
-source $HOME/.bashrc && \
-go version
+sudo apt-get install git curl build-essential gcc jq snapd --yes
                 }
 
 # Install
 
 function install {
 mkdir $HOME/stratos; cd $HOME/stratos; \
-wget https://github.com/stratosnet/stratos-chain/releases/download/v0.5.0/stchaincli && \
-wget https://github.com/stratosnet/stratos-chain/releases/download/v0.5.0/stchaind
-chmod +x stchaincli stchaind && \
-ln -s $HOME/stratos/stchaincli /usr/bin/ && \
-ln -s $HOME/stratos/stchaind /usr/bin/
+wget https://github.com/stratosnet/stratos-chain/releases/download/v0.6.1/stchaincli && \
+wget https://github.com/stratosnet/stratos-chain/releases/download/v0.6.1/stchaind
+chmod +x * && mv * /usr/bin/ && cd
 echo "export NODENAME_STRATOS="$NODENAME_STRATOS"" >> $HOME/.bashrc
 source $HOME/.bashrc
 stchaind init $NODENAME_STRATOS
-rm -vf $HOME/.stchaind/config/genesis* $HOME/.stchaind/config/config.toml && \
-wget -P $HOME/.stchaind/config/ https://raw.githubusercontent.com/stratosnet/stratos-chain-testnet/main/genesis.json && \
-wget -P $HOME/.stchaind/config/ https://raw.githubusercontent.com/stratosnet/stratos-chain-testnet/main/config.toml
-sed -i "s/mynode/"$NODENAME_STRATOS"/g" $HOME/.stchaind/config/config.toml
+rm $HOME/.stchaind/config/genesis*; \
+wget -O $HOME/.stchaind/config/genesis.json https://raw.githubusercontent.com/stratosnet/stratos-chain-testnet/main/genesis.json; \
+wget -O $HOME/.stchaind/config/config.toml https://raw.githubusercontent.com/stratosnet/stratos-chain-testnet/main/config.toml
+sed -i.bak -e "s/^persistent_peers *=.*/persistent_peers = \
+\"62abe9adad2c079423cee48d697b94568d0da0b0@143.198.136.75:26656,\
+d12cd591f7062aa11bf94e79578647e2cac26b86@18.178.110.255:26656,\
+d12cd591f7062aa11bf94e79578647e2cac26b86@18.178.110.255:26656\"/" \
+$HOME/.stchaind/config/config.toml
+pruning="custom" && \
+pruning_keep_recent="50" && \
+pruning_keep_every="1000" && \
+pruning_interval="30" && \
+sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" $HOME/.stchaind/config/app.toml && \
+sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"$pruning_keep_recent\"/" $HOME/.stchaind/config/app.toml && \
+sed -i -e "s/^pruning-keep-every *=.*/pruning-keep-every = \"$pruning_keep_every\"/" $HOME/.stchaind/config/app.toml && \
+sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"$pruning_interval\"/" $HOME/.stchaind/config/app.toml
 }
 
 function delete {
@@ -61,24 +64,25 @@ function service {
                 echo "Create service"
                 echo "============================================================"
 		
-sudo tee <<-EOF >/dev/null /etc/systemd/system/stratosd.service
+sudo tee <<EOF >/dev/null /etc/systemd/system/stratosd.service
 [Unit]
-Description=Stratos Node
+Description=Stratos Chain Node
 After=network-online.target
 [Service]
 User=$USER
-ExecStart=/usr/bin/stchaind start
-Restart=always
+ExecStart=$(which stchaind) start
+Restart=on-failure
 RestartSec=10
-LimitNOFILE=10000
+LimitNOFILE=65535
 [Install]
 WantedBy=multi-user.target
 EOF
                 }
 
 function start {
-sudo systemctl daemon-reload && \
-sudo systemctl enable stratosd && sudo systemctl restart stratosd
+sudo systemctl daemon-reload; \
+sudo systemctl enable stratosd; \
+sudo systemctl restart stratosd
                 }
 		
 #Wallet
@@ -115,21 +119,26 @@ curl -X POST https://faucet-test.thestratos.org/faucet/$WALLET_ADDRESS_STRATOS
                
 function createValidator {
 stchaincli tx staking create-validator \
---amount="1000000000ustos" \
+--amount="90000000000ustos" \
 --pubkey=$(stchaind tendermint show-validator) \
 --moniker=$NODENAME_STRATOS \
---chain-id=stratos-testnet-3 \
+--website="" \
+--identity="" \
+--details="" \
+--chain-id=tropos-1 \
 --commission-max-change-rate="0.1" \
 --commission-max-rate="0.5" \
 --commission-rate="0.1" \
 --min-self-delegation="1" \
+--node `cat "$HOME/.stchaind/config/config.toml" \
+| grep -oPm1 "(?<=^laddr = \")([^%]+)(?=\")"` \
 --gas="auto" \
 --gas-adjustment=1.5 \
 --gas-prices="0.5ustos" \
 --keyring-backend=test \
---node `cat "$HOME/.stchaind/config/config.toml" \
-| grep -oPm1 "(?<=^laddr = \")([^%]+)(?=\")"` \
---from=$NODENAME_STRATOS
+--from=$NODENAME_STRATOS \
+-y
+
                }
 	       
 #Info
