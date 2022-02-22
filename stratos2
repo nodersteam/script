@@ -171,7 +171,7 @@ function balance {
                 echo "============================================================"
                 echo "The balance will be displayed after the node is fully synchronized"
                 echo "============================================================"
-stchaincli query account $WALLET_ADDRESS_STRATOS
+stchaincli query account $NODENAME_STRATOS
 }
 
                PS3='Select an action: '
