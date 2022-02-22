@@ -100,7 +100,7 @@ sleep 10
  function recoverWallet {
 stchaincli keys add \
 --hd-path "m/44'/606'/0'/0/0" \
---keyring-backend=test $NODENAME_STRATOS
+--keyring-backend=test $NODENAME_STRATOS \
 --recover
                 }
 		
