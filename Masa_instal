@@ -52,7 +52,6 @@ echo "============================================================"
 echo "Setup NodeName:"
 echo "============================================================"
 read MASA_NODENAME
-
 echo "export MASA_NODENAME" >> ~/.bash_profile
 source ~/.bash_profile
 
@@ -70,8 +69,8 @@ make all
 cd $HOME/masa-node-v1.0/src/build/bin
 sudo cp * /usr/local/bin
 
-cd $HOME/masa-node-v1.0/src/build/bin
-sudo cp * /usr/local/bin
+cd $HOME/masa-node-v1.0
+geth --datadir data init ./network/testnet/genesis.json
 
 tee $HOME/masad.service > /dev/null <<EOF
 [Unit]
