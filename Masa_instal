@@ -52,7 +52,7 @@ echo "============================================================"
 echo "Setup NodeName:"
 echo "============================================================"
 read MASA_NODENAME
-echo "export MASA_NODENAME" >> ~/.bash_profile
+echo 'export MASA_NODENAME='${MASA_NODENAME} >> $HOME/.bash_profile
 source ~/.bash_profile
 
 echo "============================================================"
