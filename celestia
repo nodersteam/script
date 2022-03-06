@@ -11,7 +11,7 @@ echo "============================================================"
 
 
 PS3='Select an action: '
-options=("Prepare the server for installation" "Install APPD-Node" "Install Full Node" "Install Light Client" "Log APPD-Node" "Log Full" "Log Light" "Check node status" "Request for tokens in Discord" "Balance" "Create validator" "Check validator" "Parametrs"  "Exit")
+options=("Prepare the server for installation" "Install APPD-Node" "Install Full Node" "Install Light Client(Do not install with a full node on the same server)" "Log APPD-Node" "Log Full" "Log Light" "Check node status" "Request for tokens in Discord" "Balance" "Create validator" "Check validator" "Parametrs"  "Exit")
 select opt in "${options[@]}"
                do
                    case $opt in
@@ -220,7 +220,7 @@ sudo systemctl restart celestia-bridge
 break
 ;;
 
-"Install Light Client")
+"Install Light Client(Do not install with a full node on the same server)")
 
 cd $HOME
 rm -rf celestia-node
