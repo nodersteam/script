@@ -298,7 +298,7 @@ break
 break
 ;;
 
-"Log node")
+"Log APPD-Node")
 
 journalctl -u celestia-appd.service -f
 
