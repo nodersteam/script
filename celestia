@@ -11,7 +11,7 @@ echo "============================================================"
 
 
 PS3='Select an action: '
-options=("Prepare the server for installation" "Install node" "Check node status" "Request for tokens in Discord" "Balance" "Create validator" "Check validator" "Parametrs"  "Exit")
+options=("Prepare the server for installation" "Install node" "Full Node" "Log node" "Log Full" "Log Light" "Light Client" "Check node status" "Request for tokens in Discord" "Balance" "Create validator" "Check validator" "Parametrs"  "Exit")
 select opt in "${options[@]}"
                do
                    case $opt in
@@ -23,14 +23,15 @@ select opt in "${options[@]}"
                
 sudo apt update && sudo apt upgrade -y
 sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential bsdmainutils git make ncdu -y
-ver="1.17.2"
 cd $HOME
+ver="1.17.2"
 wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
 sudo rm -rf /usr/local/go
 sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz"
 rm "go$ver.linux-amd64.tar.gz"
 echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile
 source $HOME/.bash_profile
+go version
 
                echo "============================================================"
                echo "The server is ready!"
@@ -53,19 +54,25 @@ echo 'export CELESTIA_NODENAME='${CELESTIA_NODENAME} >> $HOME/.bash_profile
                 echo "============================================================"
                 echo "Enter WalletName:"
                 echo "============================================================"
-                
+               
 read CELESTIA_WALLET
 CELESTIA_WALLET=$CELESTIA_WALLET$NODERS_NODE
 echo 'export CELESTIA_WALLET='${CELESTIA_WALLET} >> $HOME/.bash_profile
 CELESTIA_CHAIN="devnet-2"
 echo 'export CELESTIA_CHAIN='${CELESTIA_CHAIN} >> $HOME/.bash_profile
 . $HOME/.bash_profile
+                echo "============================================================"
+                echo "Installation started"
+                echo "============================================================"
 
 cd $HOME
 rm -rf celestia-app
 git clone https://github.com/celestiaorg/celestia-app.git
 cd celestia-app/
+git checkout 63519ec
 make install
+
+celestia-appd version --long
 
 cd $HOME
 rm -rf networks
@@ -82,7 +89,6 @@ sed -i.bak -e "s/^seeds *=.*/seeds = \"$SEEDS\"/; s/^persistent_peers *=.*/persi
 
 external_address=$(wget -qO- eth0.me)
 sed -i.bak -e "s/^external_address = \"\"/external_address = \"$external_address:26656\"/" $HOME/.celestia-app/config/config.toml
-
 sed -i 's#"tcp://127.0.0.1:26657"#"tcp://0.0.0.0:26657"#g' $HOME/.celestia-app/config/config.toml
 
 sed -i 's/timeout_commit = "5s"/timeout_commit = "15s"/g' $HOME/.celestia-app/config/config.toml
@@ -92,7 +98,7 @@ sed -i '/\[api\]/{:a;n;/enabled/s/false/true/;Ta};/\[api\]/{:a;n;/enable/s/false
 
 pruning="custom"
 pruning_keep_recent="100"
-pruning_keep_every="2000"
+pruning_keep_every="5000"
 pruning_interval="10"
 
 sed -i -e "s/^pruning *=.*/pruning = \"$pruning\"/" $HOME/.celestia-app/config/app.toml
@@ -171,6 +177,88 @@ celestia-appd tx staking create-validator \
 break
 ;;
 
+"Full Node")
+               echo "============================================================"
+               echo "Installation started"
+               echo "============================================================"
+cd $HOME
+rm -rf celestia-node
+git clone https://github.com/celestiaorg/celestia-node.git
+cd celestia-node
+git checkout v0.1.1
+make install
+
+celestia version
+
+TRUSTED_SERVER="http://localhost:26657"
+
+TRUSTED_HASH=$(curl -s $TRUSTED_SERVER/status | jq -r .result.sync_info.latest_block_hash)
+
+echo 'export TRUSTED_SERVER='${TRUSTED_SERVER} >> $HOME/.bash_profile
+echo 'export TRUSTED_HASH='${TRUSTED_HASH} >> $HOME/.bash_profile
+source $HOME/.bash_profile
+
+celestia full init --core.remote $TRUSTED_SERVER --headers.trusted-hash $TRUSTED_HASH
+
+sed -i.bak -e 's/PeerExchange = false/PeerExchange = true/g' $HOME/.celestia-full/config.toml
+
+sudo tee /etc/systemd/system/celestia-full.service > /dev/null <<EOF
+[Unit]
+  Description=celestia-full node
+  After=network-online.target
+[Service]
+  User=$USER
+  ExecStart=$(which celestia) full start
+  Restart=on-failure
+  RestartSec=10
+  LimitNOFILE=4096
+[Install]
+  WantedBy=multi-user.target
+EOF
+
+sudo systemctl enable celestia-full
+sudo systemctl daemon-reload
+
+sudo systemctl restart celestia-full && sleep 10 && journalctl -u celestia-full -o cat -n 10000 --no-pager | grep -m 1 "*  /ip4/" > $HOME/multiaddress.txt
+
+FULL_NODE_IP=$(cat $HOME/multiaddress.txt | sed -r 's/^.{3}//')
+echo 'export FULL_NODE_IP='${FULL_NODE_IP} >> $HOME/.bash_profile
+source $HOME/.bash_profile
+
+break
+;;
+
+"Light Client")
+
+rm -rf $HOME/.celestia-light
+celestia light init --headers.trusted-peer $FULL_NODE_IP --headers.trusted-hash $TRUSTED_HASH
+
+port=2122
+sed -i.bak -e "s|ListenAddresses *=.*|ListenAddresses = \[\"/ip4/0.0.0.0/tcp/$port\", \"/ip6/::/tcp/$port\"\]|" $HOME/.celestia-light/config.toml
+sed -i.bak -e "s|NoAnnounceAddresses *=.*|NoAnnounceAddresses = \[\"/ip4/0.0.0.0/tcp/$port\", \"/ip4/127.0.0.1/tcp/$port\", \"/ip6/::/tcp/$port\"\]|" $HOME/.celestia-light/config.toml
+
+sudo tee /etc/systemd/system/celestia-light.service > /dev/null <<EOF
+[Unit]
+  Description=celestia-light
+  After=network-online.target
+[Service]
+  User=$USER
+  ExecStart=$(which celestia) light start
+  Restart=on-failure
+  RestartSec=10
+  LimitNOFILE=4096
+[Install]
+  WantedBy=multi-user.target
+EOF
+
+sudo systemctl enable celestia-light
+sudo systemctl daemon-reload
+sudo systemctl restart celestia-light
+
+break
+;;
+
+
 "Parametrs")
                echo "============================================================"
                echo "Your parameters"
@@ -201,11 +289,32 @@ break
 
                echo "============================================================"
                echo "To request tokens, you need to go to the Discord server in the
-fauccet channel and request tokens.
-Server in Discord - https://discord.com/invite/NEfhSscRSx"
+               fauccet channel and request tokens.
+               Server in Discord - https://discord.com/invite/NEfhSscRSx"
                echo "============================================================"
                echo -e "Copy and paste this \033[32m !faucet $CELESTIA_ADDR \033[37m"
                echo "============================================================"
+
+break
+;;
+
+"Log node")
+
+journalctl -u celestia-appd.service -f
+
+break
+;;
+
+"Log Full")
+
+journalctl -u celestia-full -o cat -f
+
+break
+;;
+
+"Log Light")
+
+journalctl -u celestia-light -f -o cat 
 
 break
 ;;
