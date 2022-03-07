@@ -11,7 +11,7 @@ echo "============================================================"
 
 
 PS3='Select an action: '
-options=("Prepare the server for installation" "Install APPD-Node" "Install Full Node" "Install Light Client(Do not install with a full node on the same server)" "Log APPD-Node" "Log Full" "Log Light" "Check node status" "Request for tokens in Discord" "Balance" "Create validator" "Check validator" "Parametrs"  "Exit")
+options=("Prepare the server for installation" "Install APPD-Node" "Log APPD-Node" "Check node status" "Request for tokens in Discord" "Balance" "Create validator" "Check validator" "Parametrs"  "Exit")
 select opt in "${options[@]}"
                do
                    case $opt in
@@ -178,90 +178,6 @@ celestia-appd tx staking create-validator \
 break
 ;;
 
-"Install Full Node")
-               echo "============================================================"
-               echo "Installation started"
-               echo "============================================================"
-
-cd $HOME
-rm -rf celestia-node
-git clone https://github.com/celestiaorg/celestia-node.git
-cd celestia-node
-git checkout v0.2.0
-make install
-
-TRUSTED_SERVER=$(curl -s "https://raw.githubusercontent.com/maxzonder/celestia/main/trusted_server.txt")
-TRUSTED_SERVER="http://$TRUSTED_SERVER"
-
-celestia bridge init --core.remote $TRUSTED_SERVER
-
-sed -i.bak -e 's/PeerExchange = false/PeerExchange = true/g' $HOME/.celestia-bridge/config.toml
-
-BootstrapPeers="[\"/dns4/andromeda.celestia-devops.dev/tcp/2121/p2p/12D3KooWKvPXtV1yaQ6e3BRNUHa5Phh8daBwBi3KkGaSSkUPys6D\", \"/dns4/libra.celestia-devops.dev/tcp/2121/p2p/12D3KooWK5aDotDcLsabBmWDazehQLMsDkRyARm1k7f1zGAXqbt4\", \"/dns4/norma.celestia-devops.dev/tcp/2121/p2p/12D3KooWHYczJDVNfYVkLcNHPTDKCeiVvRhg8Q9JU3bE3m9eEVyY\"]"
-
-sed -i -e "s|BootstrapPeers *=.*|BootstrapPeers = $BootstrapPeers|" $HOME/.celestia-bridge/config.toml
-
-sudo tee /etc/systemd/system/celestia-bridge.service > /dev/null <<EOF
-[Unit]
-  Description=celestia-bridge
-  After=network-online.target
-[Service]
-  User=$USER
-  ExecStart=$(which celestia) bridge start
-  Restart=on-failure
-  RestartSec=10
-  LimitNOFILE=4096
-[Install]
-  WantedBy=multi-user.target
-EOF
-
-sudo systemctl enable celestia-bridge
-sudo systemctl daemon-reload
-
-sudo systemctl restart celestia-bridge
-
-break
-;;
-
-"Install Light Client(Do not install with a full node on the same server)")
-
-cd $HOME
-rm -rf celestia-node
-git clone https://github.com/celestiaorg/celestia-node.git
-cd celestia-node
-git checkout v0.2.0
-make install
-
-celestia version
-
-celestia light init
-
-BootstrapPeers="[\"/dns4/andromeda.celestia-devops.dev/tcp/2121/p2p/12D3KooWKvPXtV1yaQ6e3BRNUHa5Phh8daBwBi3KkGaSSkUPys6D\", \"/dns4/libra.celestia-devops.dev/tcp/2121/p2p/12D3KooWK5aDotDcLsabBmWDazehQLMsDkRyARm1k7f1zGAXqbt4\", \"/dns4/norma.celestia-devops.dev/tcp/2121/p2p/12D3KooWHYczJDVNfYVkLcNHPTDKCeiVvRhg8Q9JU3bE3m9eEVyY\"]"
-
-sed -i -e "s|BootstrapPeers *=.*|BootstrapPeers = $BootstrapPeers|" $HOME/.celestia-light/config.toml
-
-sudo tee /etc/systemd/system/celestia-light.service > /dev/null <<EOF
-[Unit]
-  Description=celestia-light
-  After=network-online.target
-[Service]
-  User=$USER
-  ExecStart=$(which celestia) light start
-  Restart=on-failure
-  RestartSec=10
-  LimitNOFILE=4096
-[Install]
-  WantedBy=multi-user.target
-EOF
-
-sudo systemctl enable celestia-light
-sudo systemctl daemon-reload
-sudo systemctl restart celestia-light
-
-break
-;;
-
-
 "Parametrs")
                echo "============================================================"
                echo "Your parameters"
@@ -304,20 +220,6 @@ break
 "Log APPD-Node")
 
 journalctl -u celestia-appd.service -f
-
-break
-;;
-
-"Log Full")
-
-journalctl -u celestia-bridge -o cat -f
-
-break
-;;
-
-"Log Light")
-
-journalctl -u celestia-light -f -o cat
 
 break
 ;;
