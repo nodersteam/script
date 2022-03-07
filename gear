@@ -11,7 +11,7 @@ echo "============================================================"
 
 
 PS3='Select an action: '
-options=("Prepare the server for installation" "Install GeraNode" "Log Node" "Exit")
+options=("Prepare the server for installation" "Install GearNode" "Log Node" "Exit")
 select opt in "${options[@]}"
                do
                    case $opt in
@@ -41,7 +41,7 @@ break
 ;;
             
 
-"Install GeraNode")
+"Install GearNode")
                echo "============================================================"
                echo "Installation started"
                echo "============================================================"
