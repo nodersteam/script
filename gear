@@ -71,7 +71,6 @@ ExecStart=/root/gear-node \
         --execution wasm \
         --log runtime \
         --telemetry-url 'ws://telemetry-backend-shard.gear-tech.io:32001/submit 0' \
-        --validator
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=10000
