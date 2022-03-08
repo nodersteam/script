@@ -69,8 +69,9 @@ WorkingDirectory=/root/
 ExecStart=/root/gear-node \
         --name $GEARNODENAME \
         --execution wasm \
-        --log runtime
-        --telemetry-url 'ws://telemetry-backend-shard.gear-tech.io:32001/submit 0'
+        --log runtime \
+        --telemetry-url 'ws://telemetry-backend-shard.gear-tech.io:32001/submit 0' \
+        --validator
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=10000
@@ -78,6 +79,8 @@ LimitNOFILE=10000
 [Install]
 WantedBy=multi-user.target
 EOF
+
+echo "export GEARNODENAME="SeptimA[NODERS]"" >> ~/.bash_profile
 
 sudo systemctl restart systemd-journald
 sudo systemctl daemon-reload
