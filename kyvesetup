@@ -16,7 +16,6 @@ options=(
 "Install Docker"
 "Update ATP"
 "Setup your Private Key for next install"
-"Setup your NodeName"
 "Run Avalanche Node"
 "Run MoonBeam Node"
 "Run MoonRiver Node"
@@ -75,19 +74,6 @@ echo "============================================================"
 break
 ;;
 
-"Setup your NodeName")
-echo "============================================================"
-echo "Enter your Nodename: "
-echo "============================================================"
-read NODENAME
-echo 'export NODENAME='${NODENAME} >> $HOME/.bash_profile
-source ~/.bash_profile
-echo "============================================================"
-echo "NodeName installed $NODENAME"
-echo "============================================================"
-break
-;;
-
 # Avalance
 
 "Run Avalanche Node")
@@ -113,6 +99,7 @@ docker run -d -it --restart=always \
 --pool 0x90a70AAE360e5E69C3cB466880f025985810f2c8 \
 --private-key $private_key \
 --stake $avalanche_stake \
+--commission 10
 
 echo "============================================================"
 echo "Checking the logs"
@@ -150,6 +137,7 @@ docker run -d -it --restart=always \
 --pool 0x7d5b80078480804C126363Cf1061C2DC6b9c1b22 \
 --private-key $private_key \
 --stake $moonriver_stake \
+--commission 10
 
 echo "============================================================"
 echo "Checking the logs"
@@ -187,6 +175,7 @@ docker run -d -it --restart=always \
 --pool 0x7E6eb8D60409DC211218d6978E6FE69BB1DC1e24 \
 --private-key $private_key \
 --stake $aurora_stake \
+--commission 10
 
 echo "============================================================"
 echo "Checking the logs"
@@ -222,6 +211,7 @@ docker run -d -it --restart=always \
 --pool 0xFAA8A4d6AC08e8e470d5F4ED771D645d5CaF5957 \
 --private-key $private_key \
 --stake $moonbeam_stake \
+--commission 10
 
 echo "============================================================"
 echo "Checking the logs"
