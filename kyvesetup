@@ -180,7 +180,7 @@ docker run -d -it --restart=always \
 echo "============================================================"
 echo "Checking the logs"
 echo "============================================================"
-docker logs $MOONRIVER_NODENAME --follow --tail=100
+docker logs $AURORA_NODENAME --follow --tail=100
 echo "============================================================"
 echo "If there are no errors in the logs, congratulations, the node is
 installed. If you have any doubts - send screenshots to our support chat"
