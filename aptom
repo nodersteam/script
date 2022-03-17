@@ -72,7 +72,7 @@ sed -i '/      discovery_method: "onchain"$/a\
           type: "from_config"\
           key: "'$PRIVATE_KEY'"\
           peer_id: "'$PEER_ID'"' public_full_node.yaml
-          docker compose restart
+          docker compose up -d
 break
 ;;
 
