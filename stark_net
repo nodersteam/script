@@ -1,0 +1,74 @@
+#!/bin/bash
+
+while true
+do
+
+# Logo
+
+echo "============================================================"
+curl -s https://raw.githubusercontent.com/AlekseyMoskalev1/script/main/Noders.sh | bash
+echo "============================================================"
+
+
+PS3='Select an action: '
+options=("Prepare the server for installation" "Install Node" "Log Node" "Exit")
+select opt in "${options[@]}"
+               do
+                   case $opt in
+                   
+"Prepare the server for installation")
+               echo "============================================================"
+               echo "Preparation has begun"
+               echo "============================================================"
+               echo "============================================================"
+               echo "Your URL Alchemy:"
+               echo "============================================================"
+read URL
+echo 'export URL='${URL} >> $HOME/.bash_profile
+source ~/.bash_profile
+               
+sudo apt update && sudo apt upgrade -y
+sudo apt install curl git build-essential libgmp-dev pkg-config screen libssl-dev python3-venv python3 python3-dev -y 
+
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+source $HOME/.cargo/env
+cargo --version
+
+               echo "============================================================"
+               echo "The server is ready!"
+               echo "============================================================"
+break
+;;
+            
+
+"Install Node")
+               echo "============================================================"
+               echo "Installation started"
+               echo "============================================================"
+screen -S 1
+git clone --branch v0.1.5-alpha https://github.com/eqlabs/pathfinder.git
+cd pathfinder/py
+python3 -m venv .venv
+source .venv/bin/activate
+PIP_REQUIRE_VIRTUALENV=true pip install --upgrade pip
+PIP_REQUIRE_VIRTUALENV=true pip install -r requirements-dev.txt
+cargo run --release --bin pathfinder -- --ethereum.url $URL
+
+break
+;;
+
+"Log Node")
+
+screen -r
+
+break
+;;
+
+"Exit")
+exit
+;;
+
+*) echo "invalid option $REPLY";;
+esac
+done
+done
