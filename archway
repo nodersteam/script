@@ -11,8 +11,7 @@ echo "============================================================"
 
 
 PS3='Select an action: '
-options=(
-"Prepare the server for installation" 
+options=("Prepare the server for installation" 
 "Install ArchWay Node" 
 "Create wallet"
 "Log Node" 
