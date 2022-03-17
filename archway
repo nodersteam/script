@@ -140,6 +140,9 @@ source $HOME/.bash_profile
                echo "Wallet addres: $ARCHWAYADDRWALL"
                echo "Valoper addres: $ARCHWAYVAL"
                echo "============================================================"
+               
+break
+;;
 
 "Check node status")
                echo "============================================================"
