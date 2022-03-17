@@ -13,8 +13,7 @@ echo "============================================================"
 
 PS3='Select an action: '
 options=(
-"Install Docker"
-"Update ATP"
+"Install Docker and update ATP"
 "Run Aptos Node"
 "Status Node"
 "Log Node"
@@ -25,30 +24,21 @@ case $opt in
 
 # Docker
 
-"Install Docker")
+"Install Docker and update ATP")
 echo "============================================================"
 echo "Docker installation started"
 echo "============================================================"
+sudo apt update
+sudo apt install ca-certificates curl gnupg lsb-release wget -y
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt install docker-ce docker-ce-cli containerd.io -y
 mkdir -p ~/.docker/cli-plugins/
 curl -SL https://github.com/docker/compose/releases/download/v2.2.3/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
-echo "============================================================"
-echo "Docker installed"
-echo "============================================================"
-break
-;;
-
-"Update ATP")
-echo "============================================================"
-echo "ATP update started"
-echo "============================================================"
-sudo apt update && sudo apt upgrade -y
-sudo apt install ca-certificates curl gnupg lsb-release wget docker-ce docker-ce-cli containerd.io -y
 chmod +x ~/.docker/cli-plugins/docker-compose
 sudo chown $USER /var/run/docker.sock
 echo "============================================================"
-echo "ATP updated"
+echo "Docker installed"
 echo "============================================================"
 break
 ;;
