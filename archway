@@ -193,7 +193,7 @@ break
 
 "Check validator") 
 
-archwayd q staking validator $ARCHWAYVALOPER
+archwayd q staking validator $ARCHWAYVAL
 
 break
 ;;
