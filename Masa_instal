@@ -15,6 +15,7 @@ PS3='Select an action: '
 options=(
 "Update ATP"
 "Setup Masa"
+"Update Node"
 "Exit")
 select opt in "${options[@]}"
 do
