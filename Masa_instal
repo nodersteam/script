@@ -186,7 +186,6 @@ sudo systemctl daemon-reload
 sudo systemctl enable masad
 sudo systemctl start masad
 
-
 echo "============================================================"
 echo "Checking the logs"
 echo "============================================================"
