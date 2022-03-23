@@ -16,7 +16,7 @@ options=(
 "Update ATP"
 "Setup Masa"
 "Update Masa"
-"Chek log")
+"Chek log"
 "Exit")
 select opt in "${options[@]}"
 do
