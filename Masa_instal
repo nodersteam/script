@@ -15,7 +15,7 @@ PS3='Select an action: '
 options=(
 "Update ATP"
 "Setup Masa"
-"Update Node"
+"Update Masa"
 "Exit")
 select opt in "${options[@]}"
 do
@@ -120,7 +120,7 @@ echo "============================================================"
 break
 ;;
 
-"Update Node")
+"Update Masa")
 
 echo "============================================================"
 echo "Setup NodeName:"
