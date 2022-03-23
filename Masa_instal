@@ -16,6 +16,7 @@ options=(
 "Update ATP"
 "Setup Masa"
 "Update Masa"
+"Chek log")
 "Exit")
 select opt in "${options[@]}"
 do
@@ -185,6 +186,19 @@ sudo mv $HOME/masad.service /etc/systemd/system
 sudo systemctl daemon-reload
 sudo systemctl enable masad
 sudo systemctl start masad
+
+echo "============================================================"
+echo "Checking the logs"
+echo "============================================================"
+journalctl -u masad -f -o cat
+echo "============================================================"
+echo "If there are no errors in the logs, congratulations, the node is
+installed. If you have any doubts - send screenshots to our support chat"
+echo "============================================================"
+break
+;;
+
+"Chek log")
 
 echo "============================================================"
 echo "Checking the logs"
