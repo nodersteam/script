@@ -63,7 +63,7 @@ rm -rf masa-node-v1.0
 git clone https://github.com/masa-finance/masa-node-v1.0
 
 cd masa-node-v1.0/src
-git checkout v1.02
+git checkout v1.03
 make all
 
 cd $HOME/masa-node-v1.0/src/build/bin
@@ -111,7 +111,7 @@ sudo systemctl restart masad
 echo "============================================================"
 echo "Checking the logs"
 echo "============================================================"
-journalctl -u masad -f -o cat | grep "new block"
+journalctl -u masad -f -o cat
 echo "============================================================"
 echo "If there are no errors in the logs, congratulations, the node is
 installed. If you have any doubts - send screenshots to our support chat"
