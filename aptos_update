@@ -40,6 +40,8 @@ cd $HOME/aptos
 wget https://devnet.aptoslabs.com/genesis.blob 
 wget https://devnet.aptoslabs.com/waypoint.txt
 
+docker compose start
+
 break
 ;;
 
