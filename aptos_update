@@ -1,0 +1,57 @@
+#!/bin/bash
+
+while true
+do
+
+# Logo
+
+echo "============================================================"
+curl -s https://raw.githubusercontent.com/AlekseyMoskalev1/script/main/Noders.sh | bash
+echo "============================================================"
+
+# Menu
+
+PS3='Select an action: '
+options=(
+"Update Aptos"
+"Log Node"
+"Exit")
+select opt in "${options[@]}"
+do
+case $opt in
+
+# Docker
+
+"Update Aptos")
+echo "============================================================"
+echo "Update start"
+echo "============================================================"
+
+cd $HOME/aptos
+docker compose stop
+rm genesis.blob
+rm waypoint.txt
+
+cd /var/lib/docker/volumes/aptos_db/_data/
+rm -r db
+
+cd $HOME/aptos
+
+wget https://devnet.aptoslabs.com/genesis.blob 
+wget https://devnet.aptoslabs.com/waypoint.txt
+
+break
+;;
+
+"Log Node")
+docker logs -f aptos-fullnode-1 --tail 500
+break
+;;
+
+"Exit")
+exit
+;;
+*) echo "invalid option $REPLY";;
+esac
+done
+done
