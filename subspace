@@ -21,7 +21,7 @@ select opt in "${options[@]}"
 do
 case $opt in
 
-"Prepare server")
+"Prepare server for install")
 echo "============================================================"
 echo "Preparations have begun"
 echo "============================================================"
@@ -30,7 +30,7 @@ sudo apt-get install wget -y
 break
 ;;
 
-"Install node and farmer")
+"Install and run Node")
 echo "============================================================"
 echo "Write the name of your node"
 echo "============================================================"
@@ -105,12 +105,12 @@ sudo systemctl restart subspace
 break
 ;;
 
-"Node log")
+"Log Node")
 sudo journalctl -n 100 -f -u subspace
 break
 ;;
 
-"Farmer log")
+"Log Farmer")
 sudo journalctl -n 100 -f -u subspacefarm
 break
 ;;
