@@ -31,17 +31,17 @@ echo "============================================================"
 
 sudo apt update
 sudo apt install ca-certificates curl gnupg lsb-release wget jq sed -y
+sudo apt-get install ca-certificates curl gnupg lsb-release wget -y
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-sudo apt update
-sudo apt install docker-ce docker-ce-cli containerd.io -y
-docker version
+sudo apt-get update
+sudo apt-get install docker-ce docker-ce-cli containerd.io -y
 
-mkdir -p ~/.docker/cli-plugins/
-curl -SL https://github.com/docker/compose/releases/download/v2.2.3/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
-chmod +x ~/.docker/cli-plugins/docker-compose
-sudo chown $USER /var/run/docker.sock
-docker compose version
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+
+sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+sudo chmod a+x /usr/local/bin/yq
 
 echo "============================================================"
 echo "Docker installed"
@@ -53,28 +53,29 @@ break
 echo "============================================================"
 echo "Installing"
 echo "============================================================"
-mkdir $HOME/aptos
+
+sudo mkdir -p $HOME/aptos/identity
 cd $HOME/aptos
-wget https://raw.githubusercontent.com/aptos-labs/aptos-core/main/docker/compose/public_full_node/docker-compose.yaml
-wget https://raw.githubusercontent.com/aptos-labs/aptos-core/main/docker/compose/public_full_node/public_full_node.yaml
-wget https://devnet.aptoslabs.com/genesis.blob
-wget https://devnet.aptoslabs.com/waypoint.txt
-mkdir $HOME/aptos/identity
-docker run --rm --name aptos_tools -d -i aptoslab/tools:devnet
-docker exec -it aptos_tools aptos-operational-tool generate-key --encoding hex --key-type x25519 --key-file $HOME/private-key.txt
+
+wget -P $HOME/aptos https://raw.githubusercontent.com/aptos-labs/aptos-core/main/docker/compose/public_full_node/docker-compose.yaml
+wget -P $HOME/aptos https://raw.githubusercontent.com/aptos-labs/aptos-core/main/docker/compose/public_full_node/public_full_node.yaml
+wget -P $HOME/aptos https://devnet.aptoslabs.com/genesis.blob
+wget -P $HOME/aptos https://devnet.aptoslabs.com/waypoint.txt
+
+cd $HOME
+docker run --rm --name aptos_tools -d -i aptoslab/tools:devnet &> /dev/null
+docker exec -it aptos_tools aptos-operational-tool generate-key --encoding hex --key-type x25519 --key-file $HOME/aptos/identity/private-key.txt | grep 'Success' &> /dev/null
+    
 docker exec -it aptos_tools cat $HOME/private-key.txt > $HOME/aptos/identity/private-key.txt
-docker exec -it aptos_tools aptos-operational-tool extract-peer-from-file --encoding hex --key-file $HOME/private-key.txt --output-file $HOME/peer-info.yaml > $HOME/aptos/identity/id.json
-PEER_ID=$(cat $HOME/aptos/identity/id.json | jq -r '.Result | keys[]')
-PUBLIC_KEY=$(cat $HOME/aptos/identity/id.json | jq -r '.. | .keys?  | select(.)[]')
+docker exec -it aptos_tools aptos-operational-tool extract-peer-from-file --encoding hex --key-file $HOME/private-key.txt --output-file $HOME/peer-info.yaml &> /dev/null
+docker exec -it aptos_tools cat $HOME/peer-info.yaml > $HOME/aptos/identity/peer-info.yaml
+PEER_ID=$(sed -n 5p $HOME/aptos/identity/peer-info.yaml | sed 's/    - \(.*\)/\1/')
+PEER_ID=${PEER_ID//$'\r'/}
 PRIVATE_KEY=$(cat $HOME/aptos/identity/private-key.txt)
-docker stop aptos_tools
+        
+        /usr/local/bin/yq e -i '.full_node_networks[] +=  { "identity": {"type": "from_config", "key": "'$PRIVATE_KEY'", "peer_id": "'$PEER_ID'"} }' $HOME/aptos/public_full_node.yaml
+
 cd $HOME/aptos
-sed -i '/      discovery_method: "onchain"$/a\
-      identity:\
-          type: "from_config"\
-          key: "'$PRIVATE_KEY'"\
-          peer_id: "'$PEER_ID'"' public_full_node.yaml
-          
 docker compose up -d
 
 break
@@ -82,7 +83,7 @@ break
 
 "Status Node")
 
-curl 127.0.0.1:9101/metrics 2> /dev/null | grep aptos_state_sync_version | grep type
+curl 127.0.0.1:9101/metrics 2> /dev/null | grep "aptos_state_sync_version{type=\"synced\"}"
 break
 ;;
 
