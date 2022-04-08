@@ -81,13 +81,16 @@ docker exec -it aptos_tools cat $HOME/private-key.txt > $HOME/aptos/identity/pri
 docker exec -it aptos_tools aptos-operational-tool extract-peer-from-file --encoding hex --key-file $HOME/private-key.txt --output-file $HOME/peer-info.yaml &> /dev/null
 docker exec -it aptos_tools cat $HOME/peer-info.yaml > $HOME/aptos/identity/peer-info.yaml
 
-/usr/local/bin/yq e -i '.full_node_networks[] +=  { "identity": {"type": "from_config", "key": "'$PRIVATE_KEY'", "peer_id": "'$PEER_ID'"} }' $HOME/aptos/public_full_node.yaml
 cd aptos
 docker compose down -v
 docker pull aptoslab/validator:devnet
 docker pull aptoslab/tools:devnet
 rm public_full_node.yaml
 wget -P $HOME/aptos https://raw.githubusercontent.com/aptos-labs/aptos-core/main/docker/compose/public_full_node/public_full_node.yaml
+    PEER_ID=$(sed -n 5p $HOME/aptos/identity/peer-info.yaml | sed 's/    - \(.*\)/\1/')
+    PEER_ID=${PEER_ID//$'\r'/}
+    PRIVATE_KEY=$(cat $HOME/aptos/identity/private-key.txt)
+    /usr/local/bin/yq e -i '.full_node_networks[] +=  { "identity": {"type": "from_config", "key": "'$PRIVATE_KEY'", "peer_id": "'$PEER_ID'"} }' $HOME/aptos/public_full_node.yaml
 docker-compose restart
 break
 ;;
