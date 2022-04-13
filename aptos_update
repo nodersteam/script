@@ -26,21 +26,26 @@ case $opt in
 echo "============================================================"
 echo "Update start"
 echo "============================================================"
-
 cd $HOME/aptos
-docker compose stop
-rm genesis.blob
-rm waypoint.txt
+sudo docker compose down -v
+sudo docker pull aptoslab/validator:devnet
+sudo docker pull aptoslab/tools:devnet
 
-cd /var/lib/docker/volumes/aptos_db/_data/
-rm -r db
+sudo docker run --rm --name aptos_tools -d -i aptoslab/tools:devnet
+sudo docker cp $HOME/aptos/identity/private-key.txt aptos_tools:/root
+sudo docker exec -it aptos_tools aptos-operational-tool extract-peer-from-file --encoding hex --key-file $HOME/private-key.txt --output-file $HOME/peer-info.yaml
+sudo docker exec -it aptos_tools cat $HOME/peer-info.yaml > $HOME/aptos/identity/peer-info.yaml
+sudo docker stop aptos_tools
 
-cd $HOME/aptos
+PEER_ID=$(sed -n 2p $HOME/aptos/identity/peer-info.yaml | sed 's/..$//')
+sed -i -e "s/peer_id:.*/peer_id: \"$PEER_ID\"/" $HOME/aptos/public_full_node.yaml
+rm $HOME/aptos/genesis.blob
+wget -P $HOME/aptos https://devnet.aptoslabs.com/genesis.blob
+rm $HOME/aptos/waypoint.txt
+wget -P $HOME/aptos https://devnet.aptoslabs.com/waypoint.txt
 
-wget https://devnet.aptoslabs.com/genesis.blob 
-wget https://devnet.aptoslabs.com/waypoint.txt
-
-docker compose start
+sed -i.bak 's/\(from_config: \).*/\1"'$(cat $HOME/aptos/waypoint.txt)'"/g' $HOME/aptos/public_full_node.yaml
+sudo docker compose up -d
 
 break
 ;;
