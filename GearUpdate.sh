@@ -24,6 +24,7 @@ select opt in "${options[@]}"
                echo "============================================================"
                echo "Update has begun"
                echo "============================================================"
+sudo systemctl stop gear-node
 rm gear-node
 wget https://builds.gear.rs/gear-nightly-linux-x86_64.tar.xz && \ tar xvf gear-nightly-linux-x86_64.tar.xz && \ rm gear-nightly-linux-x86_64.tar.xz && \ chmod +x gear-node
 sudo apt install -y clang build-essential
