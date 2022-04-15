@@ -21,7 +21,7 @@ select opt in "${options[@]}"
                echo "============================================================"
                echo "Update has begun"
                echo "============================================================"
-               
+sudo systemctl stop gear-node               
 cd $HOME
 rm gear-node
 
