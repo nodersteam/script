@@ -9,7 +9,10 @@ echo "============================================================"
 
 
 PS3='Select an action: '
-options=("Update Gear Node" "Log Node" "Exit")
+options=(
+"Update Gear Node"
+"Log Node"
+"Exit")
 select opt in "${options[@]}"
                do
                    case $opt in
