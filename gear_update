@@ -47,7 +47,7 @@ sudo systemctl restart gear-node
                echo "Update is ready!"
                echo "============================================================"
 break
-
+;;
 
 "Log Node")
 
