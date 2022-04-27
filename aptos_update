@@ -46,7 +46,7 @@ rm $HOME/aptos/waypoint.txt
 wget -P $HOME/aptos https://devnet.aptoslabs.com/waypoint.txt
 
 sed -i.bak 's/\(from_config: \).*/\1"'$(cat $HOME/aptos/waypoint.txt)'"/g' $HOME/aptos/public_full_node.yaml
-sudo docker compose up -d
+sudo docker-compose up -d
 
 break
 ;;
