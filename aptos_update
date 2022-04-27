@@ -28,7 +28,7 @@ echo "============================================================"
 echo "Update start"
 echo "============================================================"
 cd $HOME/aptos
-sudo docker compose down -v
+sudo docker-compose down -v
 sudo docker pull aptoslab/validator:devnet
 sudo docker pull aptoslab/tools:devnet
 
