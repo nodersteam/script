@@ -63,8 +63,8 @@ source $HOME/.bash_profile
 
 
 mkdir $HOME/autodelegate
-wget -O $HOME/autodelegate/start.sh https://raw.githubusercontent.com/StakeTake/scriptcosmos/main/autodelegator/start.sh
-chmod +x $HOME/autodelegate/start.sh
+wget -O $HOME/autodelegate/startredeleg.sh https://raw.githubusercontent.com/AlekseyMoskalev1/script/main/startredeleg.sh
+chmod +x $HOME/autodelegate/startredeleg.sh
 break
 ;;
             
