@@ -156,8 +156,8 @@ break
 
 "Request tokens in discord")
 echo "========================================================================================================================"
-echo "In order to receive tokens, you need to go to the Discord server
-and request tokens in the validator channel"
+echo "You need to go to the Discord server
+and request tokens in the faucet channel https://discord.gg/u9vMFQUb"
 echo "========================================================================================================================"
 
 break
