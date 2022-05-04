@@ -14,6 +14,7 @@ echo "============================================================"
 PS3='Select an action: '
 options=(
 "Install Node"
+"Preparing the server"
 "Check Log"
 "Check balance"
 "Request tokens in discord"
@@ -22,6 +23,26 @@ options=(
 select opt in "${options[@]}"
 do
 case $opt in
+
+"Preparing the server")
+
+#UPDATE APT
+sudo apt update
+sudo apt install zip -y
+
+#INSTALL GO
+wget https://golang.org/dl/go1.18.1.linux-amd64.tar.gz; \
+rm -rv /usr/local/go; \
+tar -C /usr/local -xzf go1.18.1.linux-amd64.tar.gz && \
+rm -v go1.18.1.linux-amd64.tar.gz && \
+echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> ~/.bash_profile && \
+source ~/.bash_profile && \
+go version
+
+break
+;;
+
+
 
 "Install Node")
 echo "============================================================"
@@ -39,18 +60,7 @@ echo export WALLETNAME=${WALLETNAME} >> $HOME/.bash_profile
 echo export CHAIN_ID=korellia >> $HOME/.bash_profile
 source ~/.bash_profile
 
-#UPDATE APT
-sudo apt update
-sudo apt install zip -y
 
-#INSTALL GO
-wget https://golang.org/dl/go1.18.1.linux-amd64.tar.gz; \
-rm -rv /usr/local/go; \
-tar -C /usr/local -xzf go1.18.1.linux-amd64.tar.gz && \
-rm -v go1.18.1.linux-amd64.tar.gz && \
-echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> ~/.bash_profile && \
-source ~/.bash_profile && \
-go version
 
 #INSTALL
 cd $HOME
@@ -75,7 +85,6 @@ peers="a3fd6919ec3c5eb0fcd26dd9758ad8183bb7a93d@51.15.104.178:26656,52880e07804a
 sed -i.bak -e "s/^external_address *=.*/external_address = \"$external_address:26656\"/; s/^persistent_peers *=.*/persistent_peers = \"$peers\"/" $HOME/.kyve/config/config.toml
 rm /root/.kyve/config/genesis.json
 wget -O $HOME/.kyve/config/genesis.json "https://github.com/KYVENetwork/chain/releases/download/v0.0.1/genesis.json"
-wget -O $HOME/.kyve/config/addrbook.json "https://raw.githubusercontent.com/StakeTake/guidecosmos/main/KYVE/korellia/addrbook.json"
 go install github.com/cosmos/cosmos-sdk/cosmovisor/cmd/cosmovisor@v1.0.0
 mkdir -p $HOME/.kyve/cosmovisor/genesis/bin
 mkdir $HOME/.kyve/cosmovisor/upgrades
@@ -147,8 +156,8 @@ break
 
 "Request tokens in discord")
 echo "========================================================================================================================"
-echo "In order to receive tokens, you need to go to the Discord server
-and request tokens in the faucet channel in the format !faucet send <your_kyve_address>"
+echo "You need to go to the Discord server https://discord.gg/kyve
+and request tokens in the faucet channel"
 echo "========================================================================================================================"
 
 break
