@@ -24,7 +24,7 @@ select opt in "${options[@]}"
 do
 case $opt in
 
-"Prepeare serever"
+"Prepeare serever")
 
 #UPDATE APT
 sudo apt update && sudo apt upgrade -y
