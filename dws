@@ -16,6 +16,7 @@ options=(
 "Prepeare serever"
 "Install Node"
 "Check Log"
+"Check sync"
 "Check balance"
 "Request tokens in discord"
 "Create Validator"
@@ -136,6 +137,12 @@ journalctl -u dewebd -f -o cat
 break
 ;;
 
+"Check sync")
+
+curl localhost:26657/status
+
+break
+;;
 
 "Check balance")
 dewebd q bank balances $(dewebd keys show $WALLETNAME -a --bech acc)
