@@ -1,0 +1,94 @@
+#!/bin/bash
+
+while true
+do
+
+# Logo
+
+echo "============================================================"
+curl -s https://raw.githubusercontent.com/AlekseyMoskalev1/script/main/Noders.sh | bash
+echo "============================================================"
+
+
+PS3='Select an action: '
+options=("Prepare the server for installation" "Install PeaqNode" "Log Node" "Exit")
+select opt in "${options[@]}"
+               do
+                   case $opt in
+                   
+"Prepare the server for installation")
+               echo "============================================================"
+               echo "Preparation has begun"
+               echo "============================================================"
+               
+sudo apt update && sudo apt upgrade -y
+sudo apt install -y git clang curl libssl-dev llvm libudev-dev
+
+               echo "============================================================"
+               echo "The server is ready!"
+               echo "============================================================"
+break
+;;
+            
+
+"Install GearNode")
+               echo "============================================================"
+               echo "Installation started"
+               echo "============================================================"
+
+wget https://github.com/peaqnetwork/peaq-network-node/releases/download/agung-apr-7-2022/peaq-node-agung-apr-7-2022.tar.gz && \
+tar -xvzf peaq-node-agung-apr-7-2022.tar.gz && \
+rm tar -xvzf peaq-node-agung-apr-7-2022.tar.gz && \
+chmod +x $HOME/peaq-node
+
+sudo tee /etc/systemd/system/peaq.service > /dev/null <<EOF  
+[Unit]
+Description=Peaq Node
+After=network-online.target
+[Service]
+User=$USER
+ExecStart=/root/peaq-node \
+--chain agung
+WorkingDirectory=$HOME/
+Restart=on-failure
+RestartSec=12
+[Install]
+WantedBy=multi-user.target
+EOF
+
+touch start_node.sh
+echo "#!/bin/sh
+./peaq-node \
+--base-path ./chain-data \
+--chain agung \
+--port 1033 \
+--ws-port 9944 \
+--rpc-port 9933 \
+--rpc-cors all \
+--pruning archive \
+--name ro_full_node_0" >> start_node.sh
+
+
+
+sudo systemctl daemon-reload
+sudo systemctl enable peaq
+sudo systemctl start peaq
+
+break
+;;
+
+"Log Node")
+
+sudo journalctl -n 100 -f -u peaq
+
+break
+;;
+
+"Exit")
+exit
+;;
+
+*) echo "invalid option $REPLY";;
+esac
+done
+done
