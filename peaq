@@ -38,7 +38,7 @@ break
 
 wget https://github.com/peaqnetwork/peaq-network-node/releases/download/agung-apr-7-2022/peaq-node-agung-apr-7-2022.tar.gz && \
 tar -xvzf peaq-node-agung-apr-7-2022.tar.gz && \
-rm tar -xvzf peaq-node-agung-apr-7-2022.tar.gz && \
+rm peaq-node-agung-apr-7-2022.tar.gz && \
 chmod +x $HOME/peaq-node
 
 sudo tee /etc/systemd/system/peaq.service > /dev/null <<EOF  
