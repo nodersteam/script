@@ -150,7 +150,7 @@ break
 anoned tx staking create-validator \
   --amount=1990000000uan1 \
   --pubkey=$(anoned tendermint show-validator) \
-  --moniker=<YOUR_MONIKER> \
+  --moniker=$NODENAME \
   --chain-id=anone-testnet-1 \
   --commission-rate="0.1" \
   --commission-max-rate="0.2" \
