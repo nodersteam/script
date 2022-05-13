@@ -141,7 +141,7 @@ break
 ;;
 
 
-"Check balance")
+"Check Balance")
 anoned q bank balances $(anoned keys show $WALLETNAME -a --bech acc)
 break
 ;;
