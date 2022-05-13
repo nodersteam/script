@@ -13,16 +13,45 @@ echo "======================================================================"
 
 PS3='Select an action: '
 options=(
-"Prepeare tou serever"
+"Prepear serever"
 "Install Node"
 "Check Log"
-"Check balance"
+"Check Sync"
+"Check BlockHigh"
+"Check Balance"
 "Request tokens in discord"
 "Create Validator"
+"Delete Node"
+"Exit")
 "Exit")
 select opt in "${options[@]}"
 do
 case $opt in
+
+"Delete Node")
+
+sudo systemctl stop uptickd
+sudo systemctl disable uptickd
+rm -r $HOME/.uptickd
+rm -r $HOME/uptick
+rm -f /etc/systemd/system/uptickd.service
+
+break
+;;
+
+"Check Sync")
+echo "============================================================"
+echo "Synchronization = $(curl -s localhost:26657/status | jq .result.sync_info.catching_up)"
+echo "============================================================"
+break
+;;
+
+"Check BlockHigh")
+echo "============================================================"
+echo "BlockHigh = $(uptickd status | jq .SyncInfo.latest_block_height)"
+echo "============================================================"
+break
+;;
 
 "Prepeare tou serever")
 
@@ -41,7 +70,6 @@ go version
 
 break
 ;;
-
 
 "Install Node")
 echo "============================================================"
@@ -142,7 +170,7 @@ break
 ;;
 
 
-"Check balance")
+"Check Balance")
 uptickd q bank balances $(uptickd keys show $WALLETNAME -a --bech acc)
 break
 ;;
