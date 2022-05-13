@@ -13,12 +13,15 @@ echo "==========================================================================
 
 PS3='Select an action: '
 options=(
-"Prepear server"
+"Prepear serever"
 "Install Node"
 "Check Log"
-"Check balance"
+"Check Sync"
+"Check BlockHigh"
+"Check Balance"
 "Request tokens in discord"
 "Create Validator"
+"Delete Node"
 "Exit")
 select opt in "${options[@]}"
 do
@@ -40,6 +43,19 @@ go version
 break
 ;;
 
+"Check Sync")
+echo "============================================================"
+curl -s localhost:26657/status | jq .result.sync_info.catching_up
+echo "============================================================"
+break
+;;
+
+"Check BlockHigh")
+echo "============================================================"
+quicksilverd status | jq .SyncInfo.latest_block_height
+echo "============================================================"
+break
+;;
 
 "Install Node")
 echo "============================================================"
@@ -147,8 +163,10 @@ break
 ;;
 
 
-"Check balance")
+"Check Balance")
+
 quicksilverd q bank balances $(quicksilverd keys show $WALLETNAME -a --bech acc)
+
 break
 ;;
 
@@ -174,6 +192,15 @@ echo "In order to receive tokens, you need to go to the Discord server
 and request tokens in the validator channel"
 echo "========================================================================================================================"
 
+break
+;;
+
+"Delete Node")
+sudo systemctl stop quicksilverd
+sudo systemctl disable quicksilverd
+rm -r $HOME/.quicksilverd
+rm -r $HOME/quicksilver
+rm -f /etc/systemd/system/quicksilverd.service
 break
 ;;
 
