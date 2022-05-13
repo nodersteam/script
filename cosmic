@@ -15,12 +15,12 @@ echo "==========================================================================
     
 PS3='Select an action: '
 options=(
-"Prepare the server for installation" \
-"Install node" \
-"Check node status" \
-"Create wallet" \
-"Create validator" \
-"Parametrs" \
+"Prepare the server for installation"
+"Install node"
+"Check node status"
+"Create wallet"
+"Create validator"
+"Parametrs"
 "Exit")
 
 select opt in "${options[@]}"
