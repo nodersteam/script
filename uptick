@@ -23,7 +23,6 @@ options=(
 "Create Validator"
 "Delete Node"
 "Exit")
-"Exit")
 select opt in "${options[@]}"
 do
 case $opt in
