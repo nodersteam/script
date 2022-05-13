@@ -45,14 +45,14 @@ break
 
 "Check Sync")
 echo "============================================================"
-curl -s localhost:26657/status | jq .result.sync_info.catching_up
+Synchronization = curl -s localhost:26657/status | jq .result.sync_info.catching_up
 echo "============================================================"
 break
 ;;
 
 "Check BlockHigh")
 echo "============================================================"
-quicksilverd status | jq .SyncInfo.latest_block_height
+BlockHigh = quicksilverd status | jq .SyncInfo.latest_block_height
 echo "============================================================"
 break
 ;;
