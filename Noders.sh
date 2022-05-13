@@ -6,7 +6,7 @@ echo -e " MM   \033[5;34m  MMM\     M  8P    Y8   MM     Mb  MM         MM     M
 echo -e " MM   \033[5;34m  M\MM\    M 6M      Mb  MM     MM  MM         MM     MM  MM       \033[0m   MM     MM      MM             d'YM.     M`Mb   d'MM  "
 echo -e " MM   \033[5;34m  M \MM\   M MM      MM  MM     MM  MM         MM     MM  YM.      \033[0m   MM     MM      MM            ,P  Mb     M YM. ,P MM  "
 echo -e " MM   \033[5;34m  M  \MM\  M MM      MM  MM     MM  MMMMMMM    MM    .M9   YMMMMb  \033[0m   MM     MM      MMMMMMM       d'  YM.    M  Mb d  MM  "
-echo -e " MM   \033[5;34m  M   \MM\ M MM      MM  MM     MM  MM         MMMMMMM9'       `Mb \033[0m   MM     MM      MM           ,P    Mb    M  YM.P  MM  "
+echo -e " MM   \033[5;34m  M   \MM\ M MM      MM  MM     MM  MM         MMMMMMM9'        Mb \033[0m   MM     MM      MM           ,P    Mb    M  YM.P  MM  "
 echo -e " MM   \033[5;34m  M    \MM\M MM      MM  MM     MM  MM         MM  \M\          MM \033[0m   MM     MM      MM           d'    YM.   M   Mb   MM  "
 echo -e " MM   \033[5;34m  M     \MMM YM      M9  MM     MM  MM         MM   \M\         MM \033[0m   MM     MM      MM          ,MMMMMMMMb   M   YP   MM  "
 echo -e " MM   \033[5;34m  M      \MM  8b    d8   MM    .M9  MM         MM    \M\  L    ,M9 \033[0m   MM     MM      MM          d'      YM.  M   `'   MM  "
