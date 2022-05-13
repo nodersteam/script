@@ -57,14 +57,14 @@ go version
 break
 ;;
 
-"Check synck")
+"Check Sync")
 
 curl -s localhost:26657/status | jq .result.sync_info.catching_up
 
 break
 ;;
 
-"Check block")
+"Check BlockHigh")
 
 anoned status | jq .SyncInfo.latest_block_height
 
