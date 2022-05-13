@@ -9,6 +9,6 @@ echo -e " MM   \033[5;34m  M  \MM\  M MM      MM  MM     MM  MMMMMMM    MM    .M
 echo -e " MM   \033[5;34m  M   \MM\ M MM      MM  MM     MM  MM         MMMMMMM9         Mb \033[0m   MM     MM      MM           ,P    Mb    M  YM.P  MM  "
 echo -e " MM   \033[5;34m  M    \MM\M MM      MM  MM     MM  MM         MM  \M\          MM \033[0m   MM     MM      MM           d     YM.   M   Mb   MM  "
 echo -e " MM   \033[5;34m  M     \MMM YM      M9  MM     MM  MM         MM   \M\         MM \033[0m   MM     MM      MM          ,MMMMMMMMb   M   YP   MM  "
-echo -e " MM   \033[5;34m  M      \MM  8b    d8   MM    .M9  MM         MM    \M\  L    ,M9 \033[0m   MM     MM      MM          d'      YM.  M   `'   MM  "
+echo -e " MM   \033[5;34m  M      \MM  8b    d8   MM    .M9  MM         MM    \M\  L    ,M9 \033[0m   MM     MM      MM          d       YM.  M        MM  "
 echo -e " MM   \033[5;34m _M_      \M   YMMMM9   _MMMMMMM9' _MMMMMMMMM _MM_    \M\_MYMMMM9  \033[0m   MM    _MM_    _MMMMMMMMM _dM_      dMM _M_      _MM_ "
 echo -e " MMMM \033[5;34m                                                                   \033[0m MMMM                                                   "
