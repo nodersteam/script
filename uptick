@@ -13,7 +13,7 @@ echo "======================================================================"
 
 PS3='Select an action: '
 options=(
-"Prepear serever"
+"Prepear server"
 "Install Node"
 "Check Log"
 "Check Sync"
