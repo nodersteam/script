@@ -59,7 +59,7 @@ echo "Enter NodName:"
 echo "============================================================"
                 
 read ARCHWAYNODE
-ARCHWAYNODE=$ARCHWAYNODE$NODERS_NODE
+ARCHWAYNODE=$ARCHWAYNODE
 echo 'export ARCHWAYNODE='${ARCHWAYNODE} >> $HOME/.bash_profile
 
 echo "============================================================"
