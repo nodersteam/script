@@ -32,18 +32,26 @@ echo "============================================================"
 echo "Preparation has begun"
 echo "============================================================"
 
-#INSTALL DEPEND               
-sudo apt update && sudo apt upgrade -y
-sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential bsdmainutils git make ncdu gcc git jq chrony liblz4-tool -y
+#INSTALL DEPEND
+echo "============================================================"
+echo "Update and install APT"
+echo "============================================================"
+sleep 3
+sudo apt update && sudo apt upgrade -y && \
+sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential bsdmainutils git make ncdu gcc git jq chrony liblz4-tool -y >
 
 #INSTALL GO
-wget https://golang.org/dl/go1.17.3.linux-amd64.tar.gz; \
+echo "============================================================"
+echo "Install GO 1.18.1"
+echo "============================================================"
+sleep 3
+wget https://golang.org/dl/go1.18.1.linux-amd64.tar.gz; \
 rm -rv /usr/local/go; \
-tar -C /usr/local -xzf go1.17.3.linux-amd64.tar.gz && \
-rm -v go1.17.3.linux-amd64.tar.gz && \
+tar -C /usr/local -xzf go1.18.1.linux-amd64.tar.gz && \
+rm -v go1.18.1.linux-amd64.tar.gz && \
 echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> ~/.bash_profile && \
 source ~/.bash_profile && \
-go version
+go version > /dev/null
 
 echo "============================================================"
 echo "The server is ready!"
@@ -58,9 +66,9 @@ echo "============================================================"
 echo "Enter NodName:"
 echo "============================================================"
                 
-read ARCHWAYNODE
-ARCHWAYNODE=$ARCHWAYNODE
-echo 'export ARCHWAYNODE='${ARCHWAYNODE} >> $HOME/.bash_profile
+read TERITRINODE
+TERITRINODE=$TERITRINODE
+echo 'export TERITRINODE='${TERITRINODE} >> $HOME/.bash_profile
 
 echo "============================================================"
 echo "Enter WalletName:"
